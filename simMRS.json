@@ -1,0 +1,25 @@
+{
+    "userInput": {
+
+        "metablist": ["GABA","Lac"],
+        "vendor": ["Philips"], 
+        "mega_or_hadam": ["UnEdited"],
+        "localization": ["PRESS"],
+        "editTarget": ["GABA"],
+      	"TE": 68,
+      	"editOn": 1.9,
+      	"editOff": 7.5,
+        "spatial_points": 101
+    },
+    "private": {
+        "metab_default": ["Cr","NAA","H2O"],
+        "flipAngle": 180,
+        "centreFreq": 3.0,
+        "edit_flipAngle": 180
+    },
+    "DIRECTORY":{
+        "save_dir": "/Users/steve/Documents/My_Studies/MRSCloud/save_dir/",
+        "work_dir": "/Users/steve/Documents/My_Studies/MRSCloud/",
+        "outputFile": "/Users/steve/Documents/My_Studies/MRSCloud/mrs_sim_out.zip"
+    }
+}

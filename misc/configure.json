@@ -1,0 +1,20 @@
+{
+    "userInput": {
+        "boldHdrFileName": "20181022_170928CO2Challengembbold25mmisos012a001.hdr",
+        "boldImgFileName": "20181022_170928CO2Challengembbold25mmisos012a001.img",
+        "co2TraceFileName": "tbi_metabolism_mild_55_v1_for_braingps.txt",
+        "multiatlasFileName": "Result.zip",
+        "TR": 0.72,
+        "sample_rate_co2": 40,
+        "sliceOrderFile": ""
+    },
+    "private": {
+        "envelope_interp_rate": 1,
+        "SmoothFWHMmm": 8,
+        "select": 0.1,
+        "brainMaskName": "BrainMask",
+        "fixedDelayRangeMin": -5,
+        "fixedDelayRangeMax": 30
+    },
+    "outputFile": "/x/y/z/out.zip"
+}

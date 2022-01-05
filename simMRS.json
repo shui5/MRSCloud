@@ -1,15 +1,15 @@
 {
     "userInput": {
 
-        "metablist": ["GABA","Lac"],
+        "metablist": ["GABA","Lac","PCh","Glu","Gln","mI","GSH","Gly"],
         "vendor": ["Philips"], 
         "mega_or_hadam": ["UnEdited"],
         "localization": ["PRESS"],
         "editTarget": ["GABA"],
-      	"TE": 68,
+      	"TE": 30,
       	"editOn": 1.9,
       	"editOff": 7.5,
-        "spatial_points": 101
+        "spatial_points": 41
     },
     "private": {
         "metab_default": ["Cr","NAA","H2O"],

@@ -357,7 +357,7 @@ for ii = 1:length(MRS_opt)
 
             [outA]                  = sim_readout(d_Ay,MRS_opt.H,MRS_opt.Npts,MRS_opt.sw,MRS_opt.lw,90);            %Readout along y (90 degree phase);
                           %plot(outA.ppm,real(outA.specs),'r') % scnh
-            outA.ppm                = outA.ppm-(4.68-MRS_opt.centreFreq); % sim_readout used 4.65, override ppm scale from 4.65 to 3.0, % scnh
+            outA.ppm                = outA.ppm-(4.65-MRS_opt.centreFreq); % sim_readout used 4.65, override ppm scale from 4.65 to 3.0, % scnh
         case 'MEGA'
             [outA,outB,~,~]         = sim_megapress_shaped_ultrafast_readout(MRS_opt(ii),d_Ay,d_By);%,d_Cy,d_Dy);
         case {'HERMES', 'HERCULES'}
@@ -426,15 +426,15 @@ for ii = 1:length(MRS_opt)
     % Correct residual DC offset
     switch (mega_or_hadam)
         case 'UnEdited'
-            outA = op_dccorr(outA,'p');
+            outA = op_dccorr_FID_A(outA,'p');
         case 'MEGA'
-            outA = op_dccorr(outA,'p');
-            outB = op_dccorr(outB,'p');
+            outA = op_dccorr_FID_A(outA,'p');
+            outB = op_dccorr_FID_A(outB,'p');
         case {'HERMES', 'HERCULES'}
-            outA = op_dccorr(outA,'p');
-            outB = op_dccorr(outB,'p');
-            outC = op_dccorr(outC,'p');
-            outD = op_dccorr(outD,'p');
+            outA = op_dccorr_FID_A(outA,'p');
+            outB = op_dccorr_FID_A(outB,'p');
+            outC = op_dccorr_FID_A(outC,'p');
+            outD = op_dccorr_FID_A(outD,'p');
     end
     
     %     outA = op_dccorr(outA,'p');

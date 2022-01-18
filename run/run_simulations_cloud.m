@@ -1,9 +1,8 @@
 function basis = run_simulations_cloud(json_input)
-
 % addpath(genpath('/Users/steve/Desktop/sim_ultrafast'));
 % "metablist": ["Cystat","EA","HCr","Lys","PE","Thr","Val"],
 % "metablist": ["Ala","Asc","Asp","Cit","Cr","EtOH","GABA","GPC","GSH","Gln","Glu","Gly","Ins","Lac","NAA","NAAG","PCh","PCr","Phenyl","Scyllo","Ser","Tau","Tyros","bHB","bHG"],
-
+tic
 json_input      = '/Users/steve/Documents/My_Studies/MRSCloud/simMRS.json';
 sim_paras_json  = loadjson(json_input);
 
@@ -118,7 +117,7 @@ for iii = 1:length(metablist)
             end
     end
 end % for metablist
-
+toc
 %% create basis set
 
 % create a basis set in .BASIS format for LCModel
@@ -147,9 +146,10 @@ switch sequence
         subspec = [1 2 3 4 5 6 7];
         subspecName = {'a','b','c','d','diff1','diff2','sum'};
 end
-
+    
 for ss = 1:length(subspec)
     outfile   = [save_dir '/LCModel_' vendor '_' sequence '_' localization '_' editTarget '' num2str(TE) '_' subspecName{ss} '' '.BASIS'];
+    %basis.fids = conj(BASIS_MRSCloud2.fids(:,:)); % scnh, Jan 11, 2022
     RF        = io_writelcmBASIS(basis,outfile,vendor,sequence,metablist,subspec(ss));
     
     % generate plot of metabolite signal from basis set
@@ -166,5 +166,4 @@ delete([save_dir,'/BASIS_*']); % Remove the previous BASIS with MMFlag off
 % zip outputfile
 zipname = outputFile;
 zip(zipname,'save_dir');
-
 end % end of the function

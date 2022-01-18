@@ -18,7 +18,7 @@ thkY            = 3;    % slice thickness of y refocusing pulse [cm]
 thkZ            = 3;    % slice thickness of z excitation pulse [cm]
 Npts            = 8192;     % number of spectral points
 sw              = 4000;     % spectral width [Hz]
-lw              = 2;        % linewidth of the output spectrum [Hz]
+lw              = 1;        % linewidth of the output spectrum [Hz]
 gamma           = 42577000; % gyromagnetic ratio (1H = 42.58 MHz/T)
 if strcmp(vendor, 'Siemens')
     Bfield = 2.89;    % Siemens magnetic field strength [Tesla]

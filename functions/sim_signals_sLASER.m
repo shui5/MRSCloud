@@ -263,7 +263,7 @@ for ii = 1:length(MRS_opt)
             
             [outA]                  = sim_readout(d_Ay,MRS_opt.H,MRS_opt.Npts,MRS_opt.sw,MRS_opt.lw,90);            %Readout along y (90 degree phase);
             %plot(outA.ppm,real(outA.specs),'r') % scnh
-            outA.ppm                = outA.ppm-(4.65-MRS_opt.centreFreq); % sim_readout used 4.65, override ppm scale from 4.65 to 3.0, % scnh
+            outA.ppm                = outA.ppm-(4.68-MRS_opt.centreFreq); % sim_readout used 4.65, override ppm scale from 4.65 to 3.0, % scnh
         case 'MEGA'
             [outA,outB,~,~]         = sim_mega_slaser_shaped_ultrafast_readout(MRS_opt(ii),d_Ay,d_By);%,d_Cy,d_Dy);
         case {'HERMES', 'HERCULES'}
@@ -439,11 +439,11 @@ end
 %END PULSE SEQUENCE**************
 
 %Correct the ppm scale:
-out1.ppm =out1.ppm-(4.65-MRS_opt.centreFreq);
-out2.ppm =out2.ppm-(4.65-MRS_opt.centreFreq);
+out1.ppm =out1.ppm-(4.68-MRS_opt.centreFreq);
+out2.ppm =out2.ppm-(4.68-MRS_opt.centreFreq);
 if ~strcmp(MRS_opt.seq, 'MEGA')
-    out3.ppm =out3.ppm-(4.65-MRS_opt.centreFreq);
-    out4.ppm =out4.ppm-(4.65-MRS_opt.centreFreq);
+    out3.ppm =out3.ppm-(4.68-MRS_opt.centreFreq);
+    out4.ppm =out4.ppm-(4.68-MRS_opt.centreFreq);
 end
 %Fill in structure header fields:
 out1.seq=MRS_opt.seq;

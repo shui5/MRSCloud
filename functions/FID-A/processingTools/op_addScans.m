@@ -34,8 +34,9 @@ if isempty(fieldnames(in1))
     end
            
     %re-calculate Specs using fft
-    specs=fftshift(ifft(fids,[],in2.dims.t),in2.dims.t);
-    
+    %specs=fftshift(ifft(fids,[],in2.dims.t),in2.dims.t);
+	specs=fftshift(fft(fids,[],in2.dims.t),in2.dims.t); % Osprey style of fft, Jan 14, 2022, scnh
+
     %FILLING IN DATA STRUCTURES
     out=in2;
     out.fids=fids;
@@ -63,8 +64,9 @@ else
     end
     
     %re-calculate Specs using fft
-    specs=fftshift(ifft(fids,[],in1.dims.t),in1.dims.t);
-    
+    %specs=fftshift(ifft(fids,[],in1.dims.t),in1.dims.t);
+    specs=fftshift(fft(fids,[],in1.dims.t),in1.dims.t); % Osprey style of fft, Jan 14, 2022, scnh
+
     %FILLING IN DATA STRUCTURES
     out=in1;
     out.fids=fids;

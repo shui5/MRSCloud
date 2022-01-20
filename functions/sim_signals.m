@@ -426,15 +426,15 @@ for ii = 1:length(MRS_opt)
     % Correct residual DC offset
     switch (mega_or_hadam)
         case 'UnEdited'
-            outA = op_dccorr(outA,'p');
+            outA = op_dccorr_FID_A(outA,'p');
         case 'MEGA'
-            outA = op_dccorr(outA,'p');
-            outB = op_dccorr(outB,'p');
+            outA = op_dccorr_FID_A(outA,'p');
+            outB = op_dccorr_FID_A(outB,'p');
         case {'HERMES', 'HERCULES'}
-            outA = op_dccorr(outA,'p');
-            outB = op_dccorr(outB,'p');
-            outC = op_dccorr(outC,'p');
-            outD = op_dccorr(outD,'p');
+            outA = op_dccorr_FID_A(outA,'p');
+            outB = op_dccorr_FID_A(outB,'p');
+            outC = op_dccorr_FID_A(outC,'p');
+            outD = op_dccorr_FID_A(outD,'p');
     end
     
     %     outA = op_dccorr(outA,'p');
@@ -617,11 +617,11 @@ end
 %END PULSE SEQUENCE**************
 
 %Correct the ppm scale:
-out1.ppm =out1.ppm-(4.65-MRS_opt.centreFreq);
-out2.ppm =out2.ppm-(4.65-MRS_opt.centreFreq);
+out1.ppm =out1.ppm-(4.68-MRS_opt.centreFreq);
+out2.ppm =out2.ppm-(4.68-MRS_opt.centreFreq);
 if ~strcmp(MRS_opt.seq, 'MEGA')
-    out3.ppm =out3.ppm-(4.65-MRS_opt.centreFreq);
-    out4.ppm =out4.ppm-(4.65-MRS_opt.centreFreq);
+    out3.ppm =out3.ppm-(4.68-MRS_opt.centreFreq);
+    out4.ppm =out4.ppm-(4.68-MRS_opt.centreFreq);
 end
 %Fill in structure header fields:
 out1.seq=MRS_opt.seq;

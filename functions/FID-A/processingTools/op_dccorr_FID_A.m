@@ -24,7 +24,7 @@
 % OUTPUTS:
 % out   = Output following DC correction.  
 
-function [out,dcOffset]=op_dccorr(in,mode,var1);
+function [out,dcOffset]=op_dccorr_FID_A(in,mode,var1);
 
 if mode=='p'
     if nargin<3
@@ -48,10 +48,10 @@ specs=in.specs-dcOffset;
 %vector.
 if mod(size(specs,in.dims.t),2)==0
     %disp('Length of vector is even.  Doing normal conversion');
-    fids=ifft(fftshift(specs,in.dims.t),[],in.dims.t);
+    fids=fft(fftshift(specs,in.dims.t),[],in.dims.t);
 else
     %disp('Length of vector is odd.  Doing circshift by 1');
-    fids=ifft(circshift(fftshift(specs,in.dims.t),1),[],in.dims.t);
+    fids=fft(circshift(fftshift(specs,in.dims.t),1),[],in.dims.t);
 end
 
 %FILLING IN DATA STRUCTURE

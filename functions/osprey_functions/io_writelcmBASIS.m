@@ -94,16 +94,17 @@ fclose(fid);
 end
 
 function [RF] = shift_centerFreq(data_struct,idx,subspec)
-
     t=repmat(data_struct.t',[1 data_struct.sz(2:end,1)]);
     hzpppm = data_struct.Bo*42.577;
     f = (4.68-data_struct.centerFreq)*hzpppm;
     fids = data_struct.fids(:,idx,subspec);
     fids=fids.*exp(-1i*t*f*2*pi);
+        
     %Take the complex conjugate becuase the sense of rotation in LCModel seems to
     %be opposite to that used in FID-A.
     fids = conj(fids);
     specs=(fft(fids,[],data_struct.dims.t));
+
     RF=zeros(length(specs(:)),2);
     RF(:,1)=real(specs(:));
     RF(:,2)=imag(specs(:));

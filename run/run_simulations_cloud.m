@@ -8,10 +8,10 @@ sim_paras_json  = loadjson(json_input);
 
 metab_default   = sim_paras_json.private.metab_default;
 metablist       = horzcat(metab_default,sim_paras_json.userInput.metablist);
-vendor          = sim_paras_json.userInput.vendor;          % Options: Philips, Philips_universal or Siemens
-mega_or_hadam   = sim_paras_json.userInput.mega_or_hadam;   % Options: UnEdited, MEGA, HERMES or HERCULES
-localization    = sim_paras_json.userInput.localization;    % Options: PRESS or sLASER
-editTarget      = sim_paras_json.userInput.editTarget;      % Options: GABA, GSH, Lac or PE
+vendor          = sim_paras_json.userInput.vendor;          % Options: Philips/Siemens/GE/Universal_Philips 
+mega_or_hadam   = sim_paras_json.userInput.mega_or_hadam;   % Options: UnEdited/MEGA/HERMES/HERCULES
+localization    = sim_paras_json.userInput.localization;    % Options: PRESS/sLASER
+editTarget      = sim_paras_json.userInput.editTarget;      % Options: GABA/GSH/Lac/PE
 TE              = sim_paras_json.userInput.TE;              % TE for UnEdited and MEGA only, HERMES and HERCULES are internally fixed at TE=80 ms
 editOn          = sim_paras_json.userInput.editOn;          % For MEGA only, HERMES and HERCULES are internally fixed
 editOff         = sim_paras_json.userInput.editOff;         % For MEGA only, HERMES and HERCULES are internally fixed
@@ -33,7 +33,7 @@ delete([save_dir,'/*']);
 %             'PCr','PE','Phenyl','Ref0ppm','Scyllo','Ser','Tau','Tyros','bHB','bHG'};
 
 % metablist       = {'GABA'};
-% vendor          = {'Philips'};  %Options: Philips, Philips_universal or Siemens
+% vendor          = {'Philips'};  %Options: Philips, Philips_universal, Siemens or GE
 % mega_or_hadam   = {'HERCULES'}; %Options: UnEdited, MEGA, HERMES or HERCULES
 % localization    = {'PRESS'};    %Options: PRESS or sLASER
 

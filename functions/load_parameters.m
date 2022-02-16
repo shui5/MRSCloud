@@ -15,7 +15,7 @@ Npts            = 8192; % 2048 / 8192;     % number of spectral points
 sw              = 4000;     % spectral width [Hz]
 lw              = 1;        % linewidth of the output spectrum [Hz]
 gamma           = 42577000; % gyromagnetic ratio (1H = 42.58 MHz/T)
-if strcmp(vendor, 'Siemens')
+if strcmp(vendor, 'Siemens')||strcmp(vendor, 'Universal_Siemens')
     Bfield = 2.89;    % Siemens magnetic field strength [Tesla]
 else
     Bfield = 3.0;     % Philips magnetic field strength [Tesla]
@@ -61,7 +61,7 @@ switch(vendor{1})
         
     case 'Siemens'
         if strcmp(MRS_opt.localization, 'PRESS')
-            refocWaveform           = 'orig_refoc_mao_400_4.pta';      % name of refocusing pulse waveform.
+            refocWaveform           = 'orig_refoc_mao_100_4.pta';      % name of refocusing pulse waveform.
         else % sLASER GOIA pulse
             refocWaveform           = 'GOIA';                          % name of refocusing pulse waveform.
         end
@@ -85,25 +85,25 @@ switch(vendor{1})
         
     case 'GE'
         if strcmp(MRS_opt.localization, 'PRESS')
-            refocWaveform           = 'univ_eddenrefo.pta';                % name of refocusing pulse waveform.
+            refocWaveform           = 'rfa_3.9ms.pta';                % name of refocusing pulse waveform.
         else % sLASER GOIA pulse
             refocWaveform           = 'GOIA';                % name of refocusing pulse waveform.
         end
         
         if ~strcmp(MRS_opt.seq, 'GE')
             if strcmp(MRS_opt.seq, 'HERCULES')
-                editWaveform1       = 'sl_univ_pulse.pta'; %'sg100_100_0_14ms_88hz.pta';  % name of 1st single editing pulse waveform. [4.58ppm]
-                editWaveform2       = 'sl_univ_pulse.pta'; %'sg100_100_0_14ms_88hz.pta';  % name of 2nd single editing pulse waveform. [4.18ppm]
+                editWaveform1       = 'sg100_100_0_14ms_88hz.pta'; %'sg100_100_0_14ms_88hz.pta';  % name of 1st single editing pulse waveform. [4.58ppm]
+                editWaveform2       = 'sg100_100_0_14ms_88hz.pta'; %'sg100_100_0_14ms_88hz.pta';  % name of 2nd single editing pulse waveform. [4.18ppm]
                 editWaveform3       = 'dl_Philips_4_58_1_90.pta';   % name of 1st dual editing pulse waveform. [4.58ppm 1.90ppm]
                 editWaveform4       = 'dl_Philips_4_18_1_90.pta';   % name of 2nd dual editing pulse waveform. [4.18ppm 1.90ppm]
             elseif strcmp(MRS_opt.seq, 'HERMES')
-                editWaveform1       = 'sl_univ_pulse.pta';  % name of 1st single editing pulse waveform. [4.56ppm]
-                editWaveform2       = 'sl_univ_pulse.pta';  % name of 2nd single editing pulse waveform. [1.9ppm]
+                editWaveform1       = 'sg100_100_0_14ms_88hz.pta';  % name of 1st single editing pulse waveform. [4.56ppm]
+                editWaveform2       = 'sg100_100_0_14ms_88hz.pta';  % name of 2nd single editing pulse waveform. [1.9ppm]
                 editWaveform3       = 'dl_Philips_4_56_1_90.pta';   % name of 1st dual editing pulse waveform. [4.56ppm 1.90ppm]
-                editWaveform4       = 'sl_univ_pulse.pta';  % name of non-editing pulse waveform. [non-editing]
+                editWaveform4       = 'sg100_100_0_14ms_88hz.pta';  % name of non-editing pulse waveform. [non-editing]
             else                                                    % MEGA PRESS
-                editWaveform1       = 'sl_univ_pulse.pta';  % name of 1st single editing pulse waveform. [1.9ppm]
-                editWaveform2       = 'sl_univ_pulse.pta';  % name of 1st single editing pulse waveform. [7.5ppm]
+                editWaveform1       = 'sg100_100_0_14ms_88hz.pta';  % name of 1st single editing pulse waveform. [1.9ppm]
+                editWaveform2       = 'sg100_100_0_14ms_88hz.pta';  % name of 1st single editing pulse waveform. [7.5ppm]
             end
         end
         
@@ -124,6 +124,30 @@ switch(vendor{1})
                 editWaveform1       = 'sl_univ_pulse.pta';             % name of 1st single editing pulse waveform. [4.56ppm]
                 editWaveform2       = 'sl_univ_pulse.pta';             % name of 1st single editing pulse waveform. [1.90ppm]
                 editWaveform3       = 'dl_Philips_univ_4_56_1_90.pta'; % name of 1st dual editing pulse waveform. [4.56ppm 1.90ppm]
+                editWaveform4       = 'sl_univ_pulse.pta';             % name of 1st single editing pulse waveform. [non-editing]
+            else                                                       % MEGA PRESS
+                editWaveform1       = 'sl_univ_pulse.pta';             % name of 1st single editing pulse waveform. [1.9ppm]
+                editWaveform2       = 'sl_univ_pulse.pta';             % name of 1st single editing pulse waveform. [7.5ppm]
+            end
+        end
+        
+    case 'Universal_Siemens'
+        if strcmp(MRS_opt.localization, 'PRESS')
+            refocWaveform           = 'univ_eddenrefo.pta';        % name of refocusing pulse waveform.
+        else % sLASER GOIA pulse
+            refocWaveform           = 'GOIA';                      % name of refocusing pulse waveform.
+        end
+        
+        if ~strcmp(MRS_opt.seq, 'UnEdited')
+            if strcmp(MRS_opt.seq, 'HERCULES')
+                editWaveform1       = 'sl_univ_pulse.pta';         % name of 1st single editing pulse waveform. [4.58ppm]
+                editWaveform2       = 'sl_univ_pulse.pta';         % name of 1st single editing pulse waveform. [4.18ppm]
+                editWaveform3       = 'dl_Siemens_4_58_1_90.pta';  % name of 1st single editing pulse waveform. [4.58ppm 1.90ppm]
+                editWaveform4       = 'dl_Siemens_4_18_1_90.pta';  % name of 1st single editing pulse waveform. [4.18ppm 1.90ppm]
+            elseif strcmp(MRS_opt.seq, 'HERMES')
+                editWaveform1       = 'sl_univ_pulse.pta';             % name of 1st single editing pulse waveform. [4.56ppm]
+                editWaveform2       = 'sl_univ_pulse.pta';             % name of 1st single editing pulse waveform. [1.90ppm]
+                editWaveform3       = 'dl_Siemens_4_56_1_90.pta'; % name of 1st dual editing pulse waveform. [4.56ppm 1.90ppm]
                 editWaveform4       = 'sl_univ_pulse.pta';             % name of 1st single editing pulse waveform. [non-editing]
             else                                                       % MEGA PRESS
                 editWaveform1       = 'sl_univ_pulse.pta';             % name of 1st single editing pulse waveform. [1.9ppm]
@@ -161,35 +185,35 @@ end
 if ~strcmp(MRS_opt.seq, 'UnEdited')
     switch(vendor{1})
         case 'Philips'
-            TE1                 = 6.70*2;           % TE1 [ms] (Use 6.96*2 for Philips Original and 6.55*2 for Universial/Siemens)
-            MRS_opt.TE1         = TE1;              % TE1 [ms] (Use 6.96*2 for Philips Original and 6.55*2 for Universial/Siemens)
+            TE1                 = 6.96*2;           % TE1 [ms]
+            MRS_opt.TE1         = TE1;              % TE1 [ms]
         case 'Siemens'
-            TE1                 = 7.75*2;           % TE1 [ms] (Use 6.96*2 for Philips Original and 6.55*2 for Universial/Siemens)
-            MRS_opt.TE1         = TE1;              % TE1 [ms] (Use 6.96*2 for Philips Original and 6.55*2 for Universial/Siemens)
+            TE1                 = 7.75*2;           % TE1 [ms]
+            MRS_opt.TE1         = TE1;              % TE1 [ms]
         case 'GE'
-            TE1                 = 7.35*2;           % TE1 [ms] (Use 6.96*2 for Philips Original and 6.55*2 for Universial/Siemens)
-            MRS_opt.TE1         = TE1;              % TE1 [ms] (Use 6.96*2 for Philips Original and 6.55*2 for Universial/Siemens)
-        case 'Universal_Philips'
-            TE1                 = 6.55*2;           % TE1 [ms] (Use 6.96*2 for Philips Original and 6.55*2 for Universial/Siemens)
-            MRS_opt.TE1         = TE1;              % TE1 [ms] (Use 6.96*2 for Philips Original and 6.55*2 for Universial/Siemens)
+            TE1                 = 7.35*2;           % TE1 [ms]
+            MRS_opt.TE1         = TE1;              % TE1 [ms]
+        case {'Universal_Philips','Universal_Siemens'}
+            TE1                 = 6.55*2;           % TE1 [ms]
+            MRS_opt.TE1         = TE1;              % TE1 [ms]
     end
 else
     switch(vendor{1})
         case 'Philips'
-            TE1                 = 6.70*2;           % TE1 [ms] (Use 6.96*2 for Philips Original and 6.55*2 for Universial/Siemens)
-            MRS_opt.TE1         = TE1;              % TE1 [ms] (Use 6.96*2 for Philips Original and 6.55*2 for Universial/Siemens)
+            TE1                 = 7.41*2;           % TE1 [ms]
+            MRS_opt.TE1         = TE1;              % TE1 [ms]
             MRS_opt.TE2         = MRS_opt.TEs{1}-TE1; % scnh setup TE2
         case 'Siemens'
-            TE1                 = 7.75*2;           % TE1 [ms] (Use 6.96*2 for Philips Original and 6.55*2 for Universial/Siemens)
-            MRS_opt.TE1         = TE1;              % TE1 [ms] (Use 6.96*2 for Philips Original and 6.55*2 for Universial/Siemens)
+            TE1                 = 7.75*2;           % TE1 [ms]
+            MRS_opt.TE1         = TE1;              % TE1 [ms]
             MRS_opt.TE2         = MRS_opt.TEs{1}-TE1; % scnh setup TE2
         case 'GE'
-            TE1                 = 7.35*2;           % TE1 [ms] (Use 6.96*2 for Philips Original and 6.55*2 for Universial/Siemens)
-            MRS_opt.TE1         = TE1;              % TE1 [ms] (Use 6.96*2 for Philips Original and 6.55*2 for Universial/Siemens)
+            TE1                 = 7.35*2;           % TE1 [ms]
+            MRS_opt.TE1         = TE1;              % TE1 [ms]
             MRS_opt.TE2         = MRS_opt.TEs{1}-TE1; % scnh setup TE2
-        case 'Universal_Philips'
-            TE1                 = 6.55*2;           % TE1 [ms] (Use 6.96*2 for Philips Original and 6.55*2 for Universial/Siemens)
-            MRS_opt.TE1         = TE1;              % TE1 [ms] (Use 6.96*2 for Philips Original and 6.55*2 for Universial/Siemens)
+        case {'Universal_Philips','Universal_Siemens'}
+            TE1                 = 6.55*2;           % TE1 [ms]
+            MRS_opt.TE1         = TE1;              % TE1 [ms]
             MRS_opt.TE2         = MRS_opt.TEs{1}-TE1; % scnh setup TE2
     end
 end
@@ -235,16 +259,20 @@ end
 switch refocWaveform
     case 'gtst1203_sp.pta'
         refRF     = io_loadRFwaveform(refocWaveform,'ref',0);
-        refTp     = 6.19; % 6.89;
-        refRF.tbw = 1.354*refTp; %BW99 (kHz) * dur (ms)
-    case 'orig_refoc_mao_400_4.pta'
+        refTp     = 6.89;
+        refRF.tbw = 1.412*refTp; %BW50 (kHz) * dur (ms)%1.354
+    case 'orig_refoc_mao_100_4.pta'
+        refRF     = io_loadRFwaveform(refocWaveform,'ref',0);
+        refTp     = 4.4;
+        refRF.tbw = 1.11*refTp;  %BW50 (kHz) * dur (ms)
+    case 'rfa_3.9ms.pta'
         refRF     = io_loadRFwaveform(refocWaveform,'ref',0);
         refTp     = 5.2;
-        refRF.tbw = 1.17*refTp;  %BW99 (kHz) * dur (ms)
+        %refRF.tbw = 1.11*refTp;  %BW50 (kHz) * dur (ms)
     case 'univ_eddenrefo.pta'
         refRF     = io_loadRFwaveform(refocWaveform,'ref',0);
         refTp     = 7.0;
-        refRF.tbw = 1.342*refTp; %BW99 (kHz) * dur (ms)
+        refRF.tbw = 1.342*refTp; %BW50 (kHz) * dur (ms)
     case 'GOIA'
         %load RF_GOIA_Dec102019.mat;
         load RF_GOIA_20200506_100pts.mat;  %Fill this up

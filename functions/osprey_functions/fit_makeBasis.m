@@ -468,16 +468,16 @@ elseif strcmp(sequence, 'HERMES') || strcmp(sequence, 'HERCULES')
                 buffer.specs(:,rr,5)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,3);
                 buffer.fids(:,rr,6)      = MM14.fids; % DIFF2 (GSH)
                 buffer.specs(:,rr,6)     = MM14.specs;
-            else strcmp(buffer.name{rr}, 'MM12')
+            elseif strcmp(buffer.name{rr}, 'MM12')
                 buffer.fids(:,rr,5)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,4) - buffer.fids(:,rr,1) - buffer.fids(:,rr,3); % DIFF1 (GABA)
                 buffer.specs(:,rr,5)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,3);
                 buffer.fids(:,rr,6)      = MM12.fids; % DIFF2 (GSH)
                 buffer.specs(:,rr,6)     = MM12.specs;
-                %        else
-                %            buffer.fids(:,rr,5)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,4) - buffer.fids(:,rr,1) - buffer.fids(:,rr,3); % DIFF1 (GABA)
-                %            buffer.specs(:,rr,5)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,3);
-                %            buffer.fids(:,rr,6)      = buffer.fids(:,rr,3) + buffer.fids(:,rr,4) - buffer.fids(:,rr,1) - buffer.fids(:,rr,2); % DIFF2 (GSH)
-                %            buffer.specs(:,rr,6)     = buffer.specs(:,rr,3) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,2);
+            else % uncomment, Feb 14, 2022 scnh
+                buffer.fids(:,rr,5)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,4) - buffer.fids(:,rr,1) - buffer.fids(:,rr,3); % DIFF1 (GABA)
+                buffer.specs(:,rr,5)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,3);
+                buffer.fids(:,rr,6)      = buffer.fids(:,rr,3) + buffer.fids(:,rr,4) - buffer.fids(:,rr,1) - buffer.fids(:,rr,2); % DIFF2 (GSH)
+                buffer.specs(:,rr,6)     = buffer.specs(:,rr,3) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,2);
             end
             buffer.fids(:,rr,7)      = buffer.fids(:,rr,1) + buffer.fids(:,rr,3) + buffer.fids(:,rr,2) + buffer.fids(:,rr,4); % SUM
             buffer.specs(:,rr,7)     = buffer.specs(:,rr,1) + buffer.specs(:,rr,3) + buffer.specs(:,rr,2) + buffer.specs(:,rr,4);

@@ -8,7 +8,7 @@ sim_paras_json  = loadjson(json_input);
 
 metab_default   = sim_paras_json.private.metab_default;
 metablist       = horzcat(metab_default,sim_paras_json.userInput.metablist);
-vendor          = sim_paras_json.userInput.vendor;          % Options: Philips/Siemens/GE/Universal_Philips 
+vendor          = sim_paras_json.userInput.vendor;          % Options: GE/Philips/Siemens/Universal_Philips/Universal_Siemens 
 mega_or_hadam   = sim_paras_json.userInput.mega_or_hadam;   % Options: UnEdited/MEGA/HERMES/HERCULES
 localization    = sim_paras_json.userInput.localization;    % Options: PRESS/sLASER
 editTarget      = sim_paras_json.userInput.editTarget;      % Options: GABA/GSH/Lac/PE

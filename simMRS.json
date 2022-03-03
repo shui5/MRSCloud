@@ -1,17 +1,17 @@
 {
     "userInput": {
-        "metablist": ["GABA","Gln","Glu","Ins","Lac","PCh"],
-        "vendor": ["Siemens"], 
+        "metablist": ["GABA","GPC","GSH","Gln","Glu","mI","Lac","NAAG","PCh","PCr"],
+        "vendor": ["Philips"], 
         "mega_or_hadam": ["UnEdited"],
-        "localization": ["PRESS"],
+        "localization": ["sLASER"],
         "editTarget": ["GABA"],
-      	"TE": 160,
+      	"TE": 68,
       	"editOn": 1.9,
       	"editOff": 7.5,
         "spatial_points": 101
     },
     "private": {
-        "metab_default": ["Cr","NAA","H2O"],
+        "metab_default": ["Cr","NAA"],
         "flipAngle": 180,
         "centreFreq": 3.0,
         "edit_flipAngle": 180

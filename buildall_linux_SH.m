@@ -32,10 +32,15 @@
 
 % switch machinename
 %     case {'localhost'} % local machine
-        jsonlab_folder   = '/Users/steve/Documents/My_Studies/MRSCloud/functions/jsonlab-2.0/jsonlab-2.0';
-        waveform_folder  = '/Users/steve/Documents/My_Studies/MRSCloud/pulses';
-        functions_folder = '/Users/steve/Documents/My_Studies/MRSCloud/functions';
-        addpath(genpath('/Users/steve/Documents/My_Studies/MRSCloud'));
+%         jsonlab_folder   = '/Users/steve/Documents/My_Studies/MRSCloud/functions/jsonlab-2.0/jsonlab-2.0';
+%         waveform_folder  = '/Users/steve/Documents/My_Studies/MRSCloud/pulses';
+%         functions_folder = '/Users/steve/Documents/My_Studies/MRSCloud/functions';
+%         addpath(genpath('/Users/steve/Documents/My_Studies/MRSCloud'));
+        jsonlab_folder   = '/home/hfan/Documents/MATLAB/MRSCloud/functions/jsonlab-2.0/jsonlab-2.0';
+        waveform_folder  = '/home/hfan/Documents/MATLAB/MRSCloud/pulses';
+        functions_folder = '/home/hfan/Documents/MATLAB/MRSCloud/functions';
+        addpath(genpath('/home/hfan/Documents/MATLAB/MRSCloud/'));
+        
         % artfolder = '/root/code/matlab/toolbox/art';
 %     otherwise
 %         error('unknown machinename, can''t build');

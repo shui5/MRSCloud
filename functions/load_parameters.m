@@ -85,9 +85,9 @@ switch(vendor{1})
         
     case 'GE'
         if strcmp(MRS_opt.localization, 'PRESS')
-            refocWaveform           = 'rfa_3.9ms.pta';                % name of refocusing pulse waveform.
+            refocWaveform           = 'GE_rfa_3.9ms.pta';                % name of refocusing pulse waveform.
         else % sLASER GOIA pulse
-            refocWaveform           = 'GOIA';                % name of refocusing pulse waveform.
+            refocWaveform           = 'GE_GOIA_WURST';                % name of refocusing pulse waveform.
         end
         
         if ~strcmp(MRS_opt.seq, 'GE')
@@ -185,7 +185,7 @@ end
 if ~strcmp(MRS_opt.seq, 'UnEdited')
     switch(vendor{1})
         case 'Philips'
-            TE1                 = 6.96*2;           % TE1 [ms]
+            TE1                 = 7.0*2;           % TE1 [ms]
             MRS_opt.TE1         = TE1;              % TE1 [ms]
         case 'Siemens'
             TE1                 = 7.75*2;           % TE1 [ms]
@@ -200,11 +200,11 @@ if ~strcmp(MRS_opt.seq, 'UnEdited')
 else
     switch(vendor{1})
         case 'Philips'
-            TE1                 = 7.41*2;           % TE1 [ms]
+            TE1                 = 8.15*2;%7.41*2;           % TE1 [ms]
             MRS_opt.TE1         = TE1;              % TE1 [ms]
             MRS_opt.TE2         = MRS_opt.TEs{1}-TE1; % scnh setup TE2
         case 'Siemens'
-            TE1                 = 7.75*2;           % TE1 [ms]
+            TE1                 = 8.2*2;           % TE1 [ms]
             MRS_opt.TE1         = TE1;              % TE1 [ms]
             MRS_opt.TE2         = MRS_opt.TEs{1}-TE1; % scnh setup TE2
         case 'GE'
@@ -212,7 +212,7 @@ else
             MRS_opt.TE1         = TE1;              % TE1 [ms]
             MRS_opt.TE2         = MRS_opt.TEs{1}-TE1; % scnh setup TE2
         case {'Universal_Philips','Universal_Siemens'}
-            TE1                 = 6.55*2;           % TE1 [ms]
+            TE1                 = 7.0*2;           % TE1 [ms]
             MRS_opt.TE1         = TE1;              % TE1 [ms]
             MRS_opt.TE2         = MRS_opt.TEs{1}-TE1; % scnh setup TE2
     end
@@ -260,30 +260,40 @@ switch refocWaveform
     case 'gtst1203_sp.pta'
         refRF     = io_loadRFwaveform(refocWaveform,'ref',0);
         refTp     = 6.89;
-        refRF.tbw = 1.412*refTp; %BW50 (kHz) * dur (ms)%1.354
+        %refRF.tbw = 1.412*refTp; %BW50 (kHz) * dur (ms)%1.354
+        refRF=rf_resample(refRF,100);
     case 'orig_refoc_mao_100_4.pta'
         refRF     = io_loadRFwaveform(refocWaveform,'ref',0);
         refTp     = 4.4;
-        refRF.tbw = 1.11*refTp;  %BW50 (kHz) * dur (ms)
-    case 'rfa_3.9ms.pta'
+        %refRF.tbw = 1.31*refTp;  %BW50 (kHz) * dur (ms)
+    case 'GE_rfa_3.9ms.pta'
         refRF     = io_loadRFwaveform(refocWaveform,'ref',0);
         refTp     = 5.2;
         %refRF.tbw = 1.11*refTp;  %BW50 (kHz) * dur (ms)
+        refRF=rf_resample(refRF,100);
     case 'univ_eddenrefo.pta'
         refRF     = io_loadRFwaveform(refocWaveform,'ref',0);
         refTp     = 7.0;
-        refRF.tbw = 1.342*refTp; %BW50 (kHz) * dur (ms)
+        %refRF.tbw = 1.342*refTp; %BW50 (kHz) * dur (ms)
     case 'GOIA'
-        %load RF_GOIA_Dec102019.mat;
-        load RF_GOIA_20200506_100pts.mat;  %Fill this up
+        load Philips_GOIA_WURST_100pts.mat;
         refRF      = Sweep2;
-        refRF.tw1  = refRF.tw1 * 1.0; %0.9 %1
-        refTp      = 4.5;
-        %             Gx         = Sweep2.waveform(:,4);
-        %             Gy         = Gx;
+        refTp      = 4.5; % (ms)
+        BW         = 8; % (kHz)
+        refRF.tbw  = refTp*BW; % dur (ms) * BW50 (kHz)
         refRF.f0   = 0;
-        refRF.isGM = 1; %is the pulse gradient mdoulated? - 02262020 SH
+        %refRF.isGM = 1; %is the pulse gradient mdoulated? - 02262020 SH
         refRF.tthk = MRS_opt.thkX*(refTp/1000); %This is the time x sliceThickness product for gradient modulated pulses.  It is in units [cm.s]
+    case 'GE_GOIA_WURST'
+        load GE_GOIA_WURST_100pts.mat;
+        refRF      = Sweep_GE_100;
+        refTp      = 4.5; % (ms)
+        BW         = 10; % (kHz)
+        refRF.tbw  = refTp*BW; % dur (ms) * BW50 (kHz)
+        refRF.f0   = 0;
+        %refRF.isGM = 1; 
+        refRF.tthk = MRS_opt.thkX*(refTp/1000); %This is the time x sliceThickness product for gradient modulated pulses.  It is in units [cm.s]
+
 end
 MRS_opt.refRF       = refRF;
 MRS_opt.refTp       = refTp;

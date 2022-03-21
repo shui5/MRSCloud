@@ -24,7 +24,7 @@ edit_flipAngle  = sim_paras_json.private.edit_flipAngle;
 work_dir        = sim_paras_json.DIRECTORY.work_dir;
 save_dir        = sim_paras_json.DIRECTORY.save_dir;
 outputFile      = sim_paras_json.DIRECTORY.outputFile;
-delete([save_dir,'/*']); 
+delete([save_dir,'/*']);
 
 % initialize metab parameters
 % save_dir          = ('/Users/steve/Desktop/sim_ultrafast/save_dir');
@@ -44,7 +44,7 @@ delete([save_dir,'/*']);
 % editOff = 7.5;
 % spatial_points  = 101;  % number of spatial points to simulate
 
-for iii = 1:length(metablist)  
+for iii = 1:length(metablist)
     switch(mega_or_hadam{1})
         case 'UnEdited'
             ppm_min                = [1.1];
@@ -52,7 +52,7 @@ for iii = 1:length(metablist)
         case 'MEGA'
 %            ppm_min                = [1.1];
 %            ppm_max                = [1.5];
-            A                      = editOn;       %single-lobe pulse 
+            A                      = editOn;       %single-lobe pulse
             B                      = editOff;      %single-lobe pulse
             MRS_temp.editON        = num2cell([A B]);
 
@@ -76,7 +76,7 @@ for iii = 1:length(metablist)
             D                      = (4.18+1.9)/2;  %dual-lobe pulse
             MRS_temp.editON        = num2cell([A B C D]);
     end
-    
+
     MRS_temp.flipAngle             = flipAngle;        % Flip angle degrees
     MRS_temp.centreFreq            = centreFreq;       % Center frequency of MR spectrum [ppm]
     MRS_temp.edit_flipAngle        = edit_flipAngle;   % Edited flip angle
@@ -96,10 +96,10 @@ for iii = 1:length(metablist)
     MRS_temp.save_dir              = save_dir; % scnh
     MRS_temp                       = load_parameters(MRS_temp); % This is the function you need to edit to change the simulation parameters (not specified above this line)
     MRS_opt                        = MRS_temp; % Creating a struct variable with dimens >=1;
-    
+
     %Simulate
     switch(localization{1})
-        case 'PRESS'          
+        case 'PRESS'
             if strcmp(mega_or_hadam, 'HERMES') || strcmp(mega_or_hadam, 'HERCULES')
                 [MRS_opt,outA, outB, outC, outD]  = sim_signals(MRS_opt); %This function saves mat files for each sub-spectra simuation
             elseif strcmp(mega_or_hadam, 'MEGA')
@@ -107,7 +107,7 @@ for iii = 1:length(metablist)
             else
                 [MRS_opt,outA]                    = sim_signals(MRS_opt); %This function saves mat files for each sub-spectra simuation
             end
-        case 'sLASER'           
+        case 'sLASER'
             if strcmp(mega_or_hadam, 'HERMES') || strcmp(mega_or_hadam, 'HERCULES')
                 [MRS_opt,outA, outB, outC, outD]  = sim_signals_sLASER(MRS_opt); %This function saves mat files for each sub-spectra simuation
             elseif strcmp(mega_or_hadam, 'MEGA')
@@ -146,12 +146,12 @@ switch sequence
         subspec = [1 2 3 4 5 6 7];
         subspecName = {'a','b','c','d','diff1','diff2','sum'};
 end
-    
+
 for ss = 1:length(subspec)
     outfile   = [save_dir '/LCModel_' vendor '_' sequence '_' localization '_' editTarget '' num2str(TE) '_' subspecName{ss} '' '.BASIS'];
     %basis.fids = conj(BASIS_MRSCloud2.fids(:,:)); % scnh, Jan 11, 2022
     RF        = io_writelcmBASIS(basis,outfile,vendor,sequence,metablist,subspec(ss));
-    
+
     % generate plot of metabolite signal from basis set
     out = fit_plotBasis(basis, ss, 1);
     saveas(out,fullfile(save_dir,['basis-set' '_' subspecName{ss}]),'pdf');

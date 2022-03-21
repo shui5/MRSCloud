@@ -4,3 +4,6 @@ manuscript
 misc
 pulses
 **/.DS_Store
+save_dir
+z_temp
+generate_waveform

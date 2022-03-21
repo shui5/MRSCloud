@@ -38,9 +38,9 @@ if nargin<3
     fitMM = 1;
 end
 % Save all available metabolite names in a cell
-all_mets = {'Ala','Asc','Asp','bHB','bHG','Cit','Cr','CrCH2','EA','EtOH','GABA','GPC','GSH','Glc','Gln' ...
+all_mets = {'AcAc','Ace','Ala','Asc','Asp','bHB','bHG','Cit','Cr','CrCH2','EA','EtOH','GABA','GPC','GSH','Glc','Gln' ...
     ,'Glu','Gly','HCar','H2O','Ins','Lac','NAA','NAAG','PCh','PCr','PE','Phenyl' ...
-    ,'Scyllo','Ser','Tau','Tyros'};
+    ,'Scyllo','Ser','Tau','Tyros','mI','sI'};
 
 % Duplicate the input basis set
 basisSetOut = basisSetIn;

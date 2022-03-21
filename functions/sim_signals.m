@@ -112,7 +112,7 @@ for ii = 1:length(MRS_opt)
             %calculate the average density matrix (Doing this inside a separate for
             %loop because I couldn't figure out how to do this inside the parfor loop):
             d_A=struct([]);
-            parfor X=1:length(MRS_opt(ii).x)
+            for X=1:length(MRS_opt(ii).x)
                 d_A         =sim_dAdd(d_A,d_temp2{X});
             end
             d_A       = sim_apply_pfilter(d_A,MRS_opt(ii).H,+1);                   %Apply p_filter
@@ -134,7 +134,7 @@ for ii = 1:length(MRS_opt)
             %calculate the average density matrix (Doing this inside a separate for
             %loop because I couldn't figure out how to do this inside the parfor loop):
             d_A=struct([]);
-            parfor X=1:length(MRS_opt(ii).x)
+            for X=1:length(MRS_opt(ii).x)
                 d_A         =sim_dAdd(d_A,d_temp2{X});
             end
             d_A       = sim_apply_pfilter(d_A,MRS_opt(ii).H,+1);                   %Apply p_filter
@@ -264,14 +264,14 @@ for ii = 1:length(MRS_opt)
             %outA_temp=cell(length(MRS_opt(ii).y));
             %outA=struct([]);
             
-            for Y=1:length(MRS_opt(ii).y)  %Use this if you do have the MATLAB parallel processing toolbox
+            parfor Y=1:length(MRS_opt(ii).y)  %Use this if you do have the MATLAB parallel processing toolbox
                 %inA_temp{Y} = d_A;
                 %outA_temp{Y}   = apply_propagator_refoc(inA_temp{Y},MRS_opt(ii).H,MRS_opt(ii).Qrefoc{Y});
                 [outA_temp{Y}]                   = sim_press_shaped_ultrafast_Ref2(MRS_opt(ii),MRS_opt(ii).Qrefoc{Y},d_A);
             end %end of spatial loop (parfor) in y direction.
             
         otherwise
-            for Y=1:length(MRS_opt(ii).y)  %Use this if you do have the MATLAB parallel processing toolbox
+            parfor Y=1:length(MRS_opt(ii).y)  %Use this if you do have the MATLAB parallel processing toolbox
                 %                 disp(['Executing Y-position ' num2str(Y) ' of ' num2str(length(MRS_opt(ii).y))])
                 if ~strcmp(MRS_opt(ii).seq, 'MEGA')
                     [outA_temp{Y},outB_temp{Y},outC_temp{Y},outD_temp{Y}] = sim_megapress_shaped_ultrafast_Ref2(MRS_opt(ii),MRS_opt(ii).Qrefoc{Y},d_A,d_B,d_C,d_D);

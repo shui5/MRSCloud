@@ -92,7 +92,7 @@ for ii = 1:length(MRS_opt)
             end
             
             d_A=struct([]);
-            parfor X=1:length(MRS_opt(ii).x)
+            for X=1:length(MRS_opt(ii).x)
                 d_A         =sim_dAdd(d_A,d_temp2{X});
             end
             
@@ -132,7 +132,7 @@ for ii = 1:length(MRS_opt)
                     [outA_temp{X},outB_temp{X},~,~]       = sim_mega_slaser_shaped_ultrafast_edit1(d_temp,MRS_opt(ii));
                     [outA_temp{X},outB_temp{X},~,~]       = sim_mega_slaser_shaped_ultrafast_Ref2(MRS_opt(ii),MRS_opt(ii).Qrefoc{X},outA_temp{X},outB_temp{X});
                 end
-                
+                                
                 switch (mega_or_hadam)
                     case 'MEGA'
                         outA_temp{X}       = sim_apply_pfilter(outA_temp{X},MRS_opt(ii).H,-1);
@@ -186,7 +186,7 @@ for ii = 1:length(MRS_opt)
             end
             
             d_Ay=struct([]);
-            parfor Y=1:length(MRS_opt(ii).y)
+            for Y=1:length(MRS_opt(ii).y)
                 d_Ay         =sim_dAdd(d_Ay,d_temp2{Y});
             end
             

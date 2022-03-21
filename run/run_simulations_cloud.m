@@ -2,20 +2,27 @@ function basis = run_simulations_cloud(json_input)
 % addpath(genpath('/Users/steve/Desktop/sim_ultrafast'));
 % "metablist": ["Cystat","EA","HCr","Lys","PE","Thr","Val"],
 % "metablist": ["Ala","Asc","Asp","Cit","Cr","EtOH","GABA","GPC","GSH","Gln","Glu","Gly","Ins","Lac","NAA","NAAG","PCh","PCr","Phenyl","Scyllo","Ser","Tau","Tyros","bHB","bHG"],
+% "metablist": ["Ace","AcAc","Asc","Asp","GABA","GPC","GSH","Gln","Glu","mI","Lac","NAAG","PCh","PCr","PE","sI","Ser","Tau","bHB"],
+% "metablist": ["GABA","GPC","GSH","Gln","Glu","mI","Lac","NAAG","PCh","PCr","sI"],
 tic
 json_input      = '/Users/steve/Documents/My_Studies/MRSCloud/simMRS.json';
 sim_paras_json  = loadjson(json_input);
 
 metab_default   = sim_paras_json.private.metab_default;
+metab_default_2 = sim_paras_json.private.metab_default_2;
 metablist       = horzcat(metab_default,sim_paras_json.userInput.metablist);
-vendor          = sim_paras_json.userInput.vendor;          % Options: Philips, Philips_universal or Siemens
-mega_or_hadam   = sim_paras_json.userInput.mega_or_hadam;   % Options: UnEdited, MEGA, HERMES or HERCULES
-localization    = sim_paras_json.userInput.localization;    % Options: PRESS or sLASER
-editTarget      = sim_paras_json.userInput.editTarget;      % Options: GABA, GSH, Lac or PE
+vendor          = sim_paras_json.userInput.vendor;          % Options: GE/Philips/Siemens/Universal_Philips/Universal_Siemens
+mega_or_hadam   = sim_paras_json.userInput.mega_or_hadam;   % Options: UnEdited/MEGA/HERMES/HERCULES
+localization    = sim_paras_json.userInput.localization;    % Options: PRESS/sLASER
+editTarget      = sim_paras_json.userInput.editTarget;      % Options: GABA/GSH/Lac/PE
 TE              = sim_paras_json.userInput.TE;              % TE for UnEdited and MEGA only, HERMES and HERCULES are internally fixed at TE=80 ms
 editOn          = sim_paras_json.userInput.editOn;          % For MEGA only, HERMES and HERCULES are internally fixed
 editOff         = sim_paras_json.userInput.editOff;         % For MEGA only, HERMES and HERCULES are internally fixed
 spatial_points  = sim_paras_json.userInput.spatial_points;  % Number of spatial points to simulate
+
+if strcmp(mega_or_hadam, 'HERMES') || strcmp(mega_or_hadam, 'HERCULES')
+    metablist       = horzcat(metab_default,metab_default_2,sim_paras_json.userInput.metablist);
+end
 
 flipAngle       = sim_paras_json.private.flipAngle;
 centreFreq      = sim_paras_json.private.centreFreq;
@@ -33,7 +40,7 @@ delete([save_dir,'/*']);
 %             'PCr','PE','Phenyl','Ref0ppm','Scyllo','Ser','Tau','Tyros','bHB','bHG'};
 
 % metablist       = {'GABA'};
-% vendor          = {'Philips'};  %Options: Philips, Philips_universal or Siemens
+% vendor          = {'Philips'};  %Options: Philips, Philips_universal, Siemens or GE
 % mega_or_hadam   = {'HERCULES'}; %Options: UnEdited, MEGA, HERMES or HERCULES
 % localization    = {'PRESS'};    %Options: PRESS or sLASER
 
@@ -43,6 +50,13 @@ delete([save_dir,'/*']);
 % editOn = 1.9; % GABA: 1.9, Lac: 4.1;
 % editOff = 7.5;
 % spatial_points  = 101;  % number of spatial points to simulate
+
+%%%%%%%%%%%%%%%%%%%%
+% % run this part for MATLAB R2013a or before
+% c = parcluster('local'); % build the 'local' cluster object
+% nw = c.NumWorkers;       % get the number of workers
+% matlabpool (nw);         % assign the maximum number of available cores
+%%%%%%%%%%%%%%%%%%%%
 
 for iii = 1:length(metablist)
     switch(mega_or_hadam{1})
@@ -117,6 +131,8 @@ for iii = 1:length(metablist)
             end
     end
 end % for metablist
+
+% matlabpool close % only for MATLAB R2013a or before
 toc
 %% create basis set
 
@@ -148,12 +164,13 @@ switch sequence
 end
 
 for ss = 1:length(subspec)
-    outfile   = [save_dir '/LCModel_' vendor '_' sequence '_' localization '_' editTarget '' num2str(TE) '_' subspecName{ss} '' '.BASIS'];
+    outfile   = [save_dir 'LCModel_' vendor '_' sequence '_' localization '_' editTarget '' num2str(TE) '_' subspecName{ss} '' '.BASIS'];
     %basis.fids = conj(BASIS_MRSCloud2.fids(:,:)); % scnh, Jan 11, 2022
     RF        = io_writelcmBASIS(basis,outfile,vendor,sequence,metablist,subspec(ss));
 
     % generate plot of metabolite signal from basis set
     out = fit_plotBasis(basis, ss, 1);
+    saveas(out,fullfile(save_dir,['basis-set' '_' subspecName{ss}]),'mfig');
     saveas(out,fullfile(save_dir,['basis-set' '_' subspecName{ss}]),'pdf');
     close;
 end
@@ -165,5 +182,5 @@ delete([save_dir,'/BASIS_*']); % Remove the previous BASIS with MMFlag off
 
 % zip outputfile
 zipname = outputFile;
-zip(zipname,'save_dir');
+zip(zipname,save_dir);
 end % end of the function

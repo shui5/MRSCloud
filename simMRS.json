@@ -6,13 +6,14 @@
         "mega_or_hadam": ["UnEdited"],
         "localization": ["PRESS"],
         "editTarget": ["GABA"],
-      	"TE": 35,
+      	"TE": 68,
       	"editOn": 1.9,
       	"editOff": 7.5,
         "spatial_points": 41
     },
     "private": {
-        "metab_default": ["Cr","NAA","H2O"],
+        "metab_default": ["Cr","NAA"],
+        "metab_default_2": ["H2O"],
         "flipAngle": 180,
         "centreFreq": 3.0,
         "edit_flipAngle": 180

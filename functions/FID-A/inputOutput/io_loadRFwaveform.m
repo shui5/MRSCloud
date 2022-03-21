@@ -58,7 +58,7 @@ end
 if isstr(filename)
     if exist(filename)
         if filename(end-3:end)=='.pta'
-            disp('Siemens format .pta RF pulse file detected!! Loading waveform now.');
+            disp('format .pta RF pulse file detected!! Loading waveform now.');
             rf=io_readpta(filename);
         elseif filename(end-2:end)=='.RF'
             disp('Varian/Agilent format .RF RF pulse file detected!! Loading waveform now.');

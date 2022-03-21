@@ -9,6 +9,7 @@ json_input      = '/Users/steve/Documents/My_Studies/MRSCloud/simMRS.json';
 sim_paras_json  = loadjson(json_input);
 
 metab_default   = sim_paras_json.private.metab_default;
+metab_default_2 = sim_paras_json.private.metab_default_2;
 metablist       = horzcat(metab_default,sim_paras_json.userInput.metablist);
 vendor          = sim_paras_json.userInput.vendor;          % Options: GE/Philips/Siemens/Universal_Philips/Universal_Siemens 
 mega_or_hadam   = sim_paras_json.userInput.mega_or_hadam;   % Options: UnEdited/MEGA/HERMES/HERCULES
@@ -18,6 +19,10 @@ TE              = sim_paras_json.userInput.TE;              % TE for UnEdited an
 editOn          = sim_paras_json.userInput.editOn;          % For MEGA only, HERMES and HERCULES are internally fixed
 editOff         = sim_paras_json.userInput.editOff;         % For MEGA only, HERMES and HERCULES are internally fixed
 spatial_points  = sim_paras_json.userInput.spatial_points;  % Number of spatial points to simulate
+
+if strcmp(mega_or_hadam, 'HERMES') || strcmp(mega_or_hadam, 'HERCULES')
+    metablist       = horzcat(metab_default,metab_default_2,sim_paras_json.userInput.metablist);
+end
 
 flipAngle       = sim_paras_json.private.flipAngle;
 centreFreq      = sim_paras_json.private.centreFreq;
@@ -46,9 +51,12 @@ delete([save_dir,'/*']);
 % editOff = 7.5;
 % spatial_points  = 101;  % number of spatial points to simulate
 
+%%%%%%%%%%%%%%%%%%%%
+% % run this part for MATLAB R2013a or before
 % c = parcluster('local'); % build the 'local' cluster object
 % nw = c.NumWorkers;       % get the number of workers
-% matlabpool (nw);         % only for MATLAB R2013a or before
+% matlabpool (nw);         % assign the maximum number of available cores
+%%%%%%%%%%%%%%%%%%%%
 
 for iii = 1:length(metablist)  
     switch(mega_or_hadam{1})
@@ -174,5 +182,5 @@ delete([save_dir,'/BASIS_*']); % Remove the previous BASIS with MMFlag off
 
 % zip outputfile
 zipname = outputFile;
-zip(zipname,'save_dir');
+zip(zipname,save_dir);
 end % end of the function

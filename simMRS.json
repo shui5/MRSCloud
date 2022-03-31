@@ -1,8 +1,9 @@
 {
     "userInput": {
-        "metablist": ["GABA","Lac"],
-        "vendor": ["Philips"], 
-        "mega_or_hadam": ["MEGA"],
+
+        "metablist": ["Ala","Asc","Asp","Cit","EtOH","GABA","GPC","GSH","Gln","Glu","Gly","Ins","Lac","NAAG","PCh","PCr","Phenyl","Scyllo","Ser","Tau","Tyros","bHB","bHG"],
+        "vendor": ["Philips"],
+        "mega_or_hadam": ["UnEdited"],
         "localization": ["PRESS"],
         "editTarget": ["GABA"],
       	"TE": 68,
@@ -18,8 +19,8 @@
         "edit_flipAngle": 180
     },
     "DIRECTORY":{
-        "save_dir": "/Users/steve/Documents/My_Studies/MRSCloud/save_dir/",
-        "work_dir": "/Users/steve/Documents/My_Studies/MRSCloud/",
-        "outputFile": "/Users/steve/Documents/My_Studies/MRSCloud/mrs_sim_out.zip"
+        "save_dir": "save_dir",
+        "work_dir": "",
+        "outputFile": "mrs_sim_out.zip"
     }
 }

@@ -1,21 +1,22 @@
 {
     "userInput": {
-        "metablist": ["GABA","Lac"],
+        "metablist": ["Ala","Asc","Asp","Cit","EA","EtOH","GABA","GPC","GSH","Gln","Glu","Gly","H2O","Ins","Lac","NAAG","PCh","PCr","PE","Phenyl","Scyllo","Ser","Tau","Tyros","bHB"],
         "vendor": ["Philips"], 
         "mega_or_hadam": ["MEGA"],
         "localization": ["PRESS"],
         "editTarget": ["GABA"],
-      	"TE": 68,
+      	"TE": 80,
       	"editOn": 1.9,
       	"editOff": 7.5,
-        "spatial_points": 41
+        "editTp": 20,
+        "spatial_points": 101
     },
     "private": {
-        "metab_default": ["Cr","NAA"],
-        "metab_default_2": ["H2O"],
+        "metab_default": ["Cr","NAA","H2O"],
         "flipAngle": 180,
         "centreFreq": 3.0,
-        "edit_flipAngle": 180
+        "edit_flipAngle": 180,
+        "excflipAngle": 90
     },
     "DIRECTORY":{
         "save_dir": "/Users/steve/Documents/My_Studies/MRSCloud/save_dir/",

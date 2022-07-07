@@ -197,7 +197,7 @@ else
 end
 
 % If spectral editing has been performed, do the SUM and DIFF spectra here
-if strcmp(sequence, 'MEGA')
+if strcmp(sequence, 'MEGA')||strcmp(sequence, 'Edited_se_MRSI')
     % Automatic recognition of on/off data based on NAA and water peaks
     switch editTarget
         case 'GABA'
@@ -288,6 +288,12 @@ if strcmp(sequence, 'MEGA')
     for rr = 1:length(buffer.name)
         %% scnh
         if addMMFlag
+            rr
+            buffer.name{rr}
+            buffer.fids(:,rr,3)      = buffer.fids(:,rr,2) - buffer.fids(:,rr,1); % DIFF %scnh
+            buffer.specs(:,rr,3)     = buffer.specs(:,rr,2) - buffer.specs(:,rr,1); %scnh
+            buffer.fids(:,rr,4)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,1); % SUM %scnh
+            buffer.specs(:,rr,4)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,1); %scnh
             switch editTarget
                 case 'GABA'
                     MM09    = op_gaussianPeak(n,sw,Bo,centerFreq,0.085*hzppm,0.915,3*oneProtonArea/gaussianArea);
@@ -295,6 +301,9 @@ if strcmp(sequence, 'MEGA')
                     if strcmp(buffer.name{rr}, 'MM09')
                         buffer.fids(:,rr,3)      = MM09.fids; % DIFF
                         buffer.specs(:,rr,3)     = MM09.specs;
+%                    else
+%                    buffer.fids(:,rr,3)      = buffer.fids(:,rr,2) - buffer.fids(:,rr,1); % DIFF scnh
+%                    buffer.specs(:,rr,3)     = buffer.specs(:,rr,2) - buffer.specs(:,rr,1);% scnh
                     end                  
                 case 'GSH'
                     MM12     = op_gaussianPeak(n,sw,Bo,centerFreq,0.07*hzppm,1.20,2*oneProtonArea/gaussianArea);
@@ -321,10 +330,6 @@ if strcmp(sequence, 'MEGA')
                         buffer.specs(:,rr,3)     = MM12.specs;
                     end                
             end
-            buffer.fids(:,rr,3)      = buffer.fids(:,rr,2) - buffer.fids(:,rr,1); % DIFF %scnh
-            buffer.specs(:,rr,3)     = buffer.specs(:,rr,2) - buffer.specs(:,rr,1); %scnh
-            buffer.fids(:,rr,4)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,1); % SUM %scnh
-            buffer.specs(:,rr,4)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,1); %scnh
         end
         %% scnh
         

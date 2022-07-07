@@ -77,12 +77,12 @@ while ~feof(fid)
     
     line=fgets(fid);
     
-    nmused_index=findstr(line,'$NMUSED');
+    basisused_index=findstr(line,'$BASIS');
     linenum=1;
     RF=[];
-    line=fgets(fid); %scnh
+
     % If the line is empty skip it
-    while ~isempty(line) && isempty(nmused_index) && ~fileEnd
+    while ~isempty(line) && isempty(basisused_index) && ~fileEnd
         %dataline=line(1:semicol_index-2);
         [A,count, errmsg, nextindex] = sscanf(line, '%f', inf);
         % If read failed, output the error
@@ -98,9 +98,21 @@ while ~feof(fid)
         end
         linenum = linenum + 1;
         line=fgets(fid);
-        nmused_index=findstr(line,'$NMUSED');
+        basisused_index=findstr(line,'$BASIS');
     end
     specs=RF(1:2:end) + 1i*RF(2:2:end);
+    
+    % GO 2022/01/24
+    % LCModel uses negative BADELT values to encrypt basis sets
+    % (LCModel.f source code lines 3666 and following)
+    if dwelltime < 0
+        dix = 1499;
+        for rr = 1:length(specs)
+            [randomresult, dix] = lcmodelrng(dix);
+            specs(rr) = -specs(rr) .* exp(-20*randomresult + 10);
+        end
+    end
+    
     specs=fftshift(conj(specs),1);
     vectorsize=length(specs);
     sz=[vectorsize 1];
@@ -156,8 +168,63 @@ while ~feof(fid)
 end
 
 fclose(fid);
-
+end
 % RF=RF';
 % rf(:,1)=RF(:,2)*180/pi;
 % rf(:,2)=RF(:,1);
 % rf(:,3)=ones(length(RF(:,1)),1);
+
+
+
+
+% GO 2022/01/24
+% LCModel uses negative BADELT values to encrypt basis sets
+% (LCModel.f source code lines 3666 and following)
+%++++++++++++++++ doubleprecision VERSION 2DP (MAR 1984) ++++++++++++++    4222
+%  FUNCTION RANDOM.  PRODUCES A PSEUDORANDOM REAL ON THE OPEN INTERVAL      4223
+%      (0.,1.).                                                             4224
+%  DIX (IN doubleprecision) MUST BE INITIALIZED TO A WHOLE NUMBER          4225
+%      BETWEEN 1.0D0 AND 2147483646.0D0 BEFORE THE FIRST CALL TO RANDOM       4226
+%      AND NOT CHANGED BETWEEN SUCCESSIVE CALLS TO RANDOM.                  4227
+%  BASED ON L. SCHRAGE, ACM TRANS. ON MATH. SOFTWARE 5, 132 (1979).         4228
+%-----------------------------------------------------------------------    4229
+function [randomresult,dix]=lcmodelrng(dix);
+
+a   = 16807.0d0;
+b15 = 32768.d0;
+b16 = 65536.0d0;
+p   = 2147483647.0d0;
+
+ %                                                                           4231
+ %  PORTABLE RANDOM NUMBER GENERATOR                                         4232
+ %   USING THE RECURSION                                                     4233
+ %    DIX = DIX*A MOD P                                                      4234
+ %                                                                           4235
+ %                                                                           4237
+ %  7**5, 2**15, 2**16, 2**31-1                                              4238
+                                                             
+ %  GET 15 HI ORDER BITS OF DIX                                              4241
+ xhi = dix./b16;
+ xhi = xhi - rem(xhi,1.0d0);
+ %  GET 16 LO BITS IF DIX AND FORM LO PRODUCT                                4244
+ xalo =(dix-xhi.*b16).*a;
+ %  GET 15 HI ORDER BITS OF LO PRODUCT                                       4246
+ leftlo = xalo./b16;
+ leftlo = leftlo - rem(leftlo,1.0d0);
+ %  FORM THE 31 HIGHEST BITS OF FULL PRODUCT                                 4249
+ fhi = xhi.*a + leftlo;
+ %  GET OVERFLO PAST 31ST BIT OF FULL PRODUCT                                4251
+ k = fix(fhi./b15);
+ k = fix(k - rem(k,1.0d0));
+ %  ASSEMBLE ALL THE PARTS AND PRESUBTRACT P                                 4254
+ %   THE PARENTHESES ARE ESSENTIAL                                           4255
+ dix =(((xalo-leftlo.*b16)-p)+(fhi-k.*b15).*b16) + k;
+ %  ADD P BACK IN IF NECESSARY                                               4257
+ if(dix < 0.0d0)
+    dix = dix + p;
+ end
+ %  MULTIPLY BY 1/(2**31-1)                                                  4259
+ randomresult = dix.*4.656612875d-10;
+end %function random
+
+

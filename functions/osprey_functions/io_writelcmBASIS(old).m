@@ -8,7 +8,7 @@
 %
 %   INPUT:      in      = Osprey BASIS file
 %               outfile = path and name of the LCModel .BASIS file
-%               vendor  = String with Vendor name for consistent naming 
+%               vendor  = String with Vendor name for consistent naming
 %               SEQ     = name of the sequence
 %
 %   OUTPUT:     RF is unused, but .BASIS file is created
@@ -37,7 +37,6 @@ name = fieldnames(metabList);
 
 for ii = 1:length(name)
     metabList.(name{ii}) = 0;
-    
 end
 
 for kk = 1:length(metablist)
@@ -45,14 +44,13 @@ for kk = 1:length(metablist)
 end
 % end scnh
 
-% Create the modified basis set without macro molecules 
+% Create the modified basis set without macro molecules
 basisSet = fit_selectMetabs(in, metabList, 0);
 
 Bo=basisSet.Bo;
 HZPPPM=42.577*Bo;
 FWHMBA = basisSet.linewidth/HZPPPM;
 ECHOT = basisSet.te;
-  
 BADELT=basisSet.dwelltime;
 NDATAB= basisSet.sz(1);
 
@@ -98,8 +96,8 @@ function [RF] = shift_centerFreq(data_struct,idx,subspec)
     hzpppm = data_struct.Bo*42.577;
     f = (4.68-data_struct.centerFreq)*hzpppm;
     fids = data_struct.fids(:,idx,subspec);
-    fids=fids.*exp(-1i*t*f*2*pi);
-        
+    fids = ifftshift(fids,[],data_struct.dims.t);
+    fids=fids.*exp(-1j*f*2*pi.*t);
     %Take the complex conjugate becuase the sense of rotation in LCModel seems to
     %be opposite to that used in FID-A.
     fids = conj(fids);

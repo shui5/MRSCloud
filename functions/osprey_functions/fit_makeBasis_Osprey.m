@@ -1,6 +1,5 @@
 % fit_makeBasis.m
 % Georg Oeltzschner, Johns Hopkins University 2019.
-% Modified version for MRSCloud, Steve Hui, 2022.
 %
 % USAGE:
 % [BASIS] = fit_makeBasis(folder, addMMFlag, sequence, editTarget)
@@ -31,7 +30,7 @@
 % OUTPUTS:
 % BASIS     = Simulated basis set in FID-A structure format. 
 
-function [BASIS] = fit_makeBasis(folder, addMMFlag, sequence, editTarget, TE, localization, vendor)
+function [BASIS] = fit_makeBasis_Osprey(folder, addMMFlag, sequence, editTarget)
 
 % Parse input arguments
 if nargin < 4
@@ -51,8 +50,8 @@ end
 % Collect *.mat filenames from input folder
 mat_files       = dir([folder filesep '*.mat']);
 mat_filenames   = strcat(folder, filesep, {mat_files.name});
-%idx = contains(mat_filenames, 'Ref');
-%mat_filenames(idx) = [];
+idx = contains(mat_filenames, 'Ref');
+mat_filenames(idx) = [];
 nMets           = length(mat_filenames);
 
 % Loop over all *.mat filenames, load their data, store in a buffer
@@ -90,8 +89,11 @@ for kk = 1:nMets
     buffer.n(kk)                = temp.(basisFct{1}).sz(1);
     buffer.linewidth(kk)        = temp.(basisFct{1}).linewidth;
     buffer.Bo(kk)               = temp.(basisFct{1}).Bo;
-    %buffer.seq{kk}              = temp.(basisFct{1}).seq;
-    buffer.seq{kk}              = sequence;
+    if iscell(temp.(basisFct{1}).seq)
+        buffer.seq{kk}              = temp.(basisFct{1}).seq{1};
+    else
+        buffer.seq{kk}              = temp.(basisFct{1}).seq;
+    end
     if isfield(temp.(basisFct{1}),'name')
         buffer.name{kk}             = temp.(basisFct{1}).name;
     else
@@ -99,8 +101,7 @@ for kk = 1:nMets
         C = C{end};
         buffer.name{kk} = strrep(C,'.mat','');
     end
-    %buffer.te(kk)               = temp.(basisFct{1}).te;
-    buffer.te(kk)               = TE;
+    buffer.te(kk)               = temp.(basisFct{1}).te;
     buffer.dims                 = temp.(basisFct{1}).dims;
     buffer.flags                = temp.(basisFct{1}).flags;
 end
@@ -189,7 +190,7 @@ if addMMFlag
     
     BASIS.flags.addedMM     = 1;
     BASIS.nMM               = length(MMLips);
-    save_str = '_wMM';
+    save_str = '_MM';
 else
     BASIS.flags.addedMM     = 0;
     BASIS.nMM               = 0;
@@ -197,7 +198,7 @@ else
 end
 
 % If spectral editing has been performed, do the SUM and DIFF spectra here
-if strcmp(sequence, 'MEGA')||strcmp(sequence, 'Edited_se_MRSI')
+if strcmp(sequence, 'MEGA')
     % Automatic recognition of on/off data based on NAA and water peaks
     switch editTarget
         case 'GABA'
@@ -209,7 +210,7 @@ if strcmp(sequence, 'MEGA')||strcmp(sequence, 'Edited_se_MRSI')
             if maxA/maxB < 0.1
                 % this means A is on, B is off, indices need to be swapped
                 switchOrder = [2 1];
-            elseif maxA/maxB > 0.10
+            elseif maxA/maxB > 10
                 % this means A is off, B is on, indices stay as the are
                 switchOrder = [1 2];
             end
@@ -225,7 +226,7 @@ if strcmp(sequence, 'MEGA')||strcmp(sequence, 'Edited_se_MRSI')
             if maxA/maxB < 0.1
                 % this means A is on, B is off, indices need to be swapped
                 switchOrder = [2 1];
-            elseif maxA/maxB > 0.10
+            elseif maxA/maxB > 10
                 % this means A is off, B is on, indices stay as the are
                 switchOrder = [1 2];
             end
@@ -241,7 +242,7 @@ if strcmp(sequence, 'MEGA')||strcmp(sequence, 'Edited_se_MRSI')
             if maxA/maxB < 0.1
                 % this means A is on, B is off, indices need to be swapped
                 switchOrder = [2 1];
-            elseif maxA/maxB > 0.10
+            elseif maxA/maxB > 10
                 % this means A is off, B is on, indices stay as the are
                 switchOrder = [1 2];
             end
@@ -257,8 +258,7 @@ if strcmp(sequence, 'MEGA')||strcmp(sequence, 'Edited_se_MRSI')
             if maxA/maxB < 0.1
                 % this means A is on, B is off, indices need to be swapped
                 switchOrder = [2 1];
-            %elseif maxA/maxB > 1
-            elseif maxA/maxB > 0.1 % scnh Oct 26, 2021
+            elseif maxA/maxB > 10
                 % this means A is off, B is on, indices stay as the are
                 switchOrder = [1 2];
             end
@@ -268,13 +268,13 @@ if strcmp(sequence, 'MEGA')||strcmp(sequence, 'Edited_se_MRSI')
         case 'PE398'
             range_Ins = [3.8 4.1];
             pts_Ins = BASIS.ppm >= range_Ins(1) & BASIS.ppm <= range_Ins(end);
-            idx_Ins = find(strcmp(buffer.name,'Ins'));
+            idx_Ins = find(strcmp(buffer.name,'mI'));
             maxA = max(real(buffer.specs(pts_Ins,idx_Ins,1)));
             maxB = max(real(buffer.specs(pts_Ins,idx_Ins,2)));
             if maxA/maxB < 0.1
                 % this means A is on, B is off, indices need to be swapped
                 switchOrder = [2 1];
-            elseif maxA/maxB > 0.10
+            elseif maxA/maxB > 10
                 % this means A is off, B is on, indices stay as the are
                 switchOrder = [1 2];
             end
@@ -286,126 +286,72 @@ if strcmp(sequence, 'MEGA')||strcmp(sequence, 'Edited_se_MRSI')
     % Now that we have guaranteed that the first dimension is always OFF
     % and the second one is always ON, we generate the DIFF and SUM.
     for rr = 1:length(buffer.name)
-        %% scnh
-        if addMMFlag
-%            buffer.fids(:,rr,3)      = buffer.fids(:,rr,2) - buffer.fids(:,rr,1); % DIFF %scnh
-%            buffer.specs(:,rr,3)     = buffer.specs(:,rr,2) - buffer.specs(:,rr,1); %scnh
-%            buffer.fids(:,rr,4)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,1); % SUM %scnh
-%            buffer.specs(:,rr,4)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,1); %scnh
-            switch editTarget
-                case 'GABA'
-                    MM09    = op_gaussianPeak(n,sw,Bo,centerFreq,0.085*hzppm,0.915,3*oneProtonArea/gaussianArea);
-                    MM09    = op_dccorr(MM09,'p');
-                    if strcmp(buffer.name{rr}, 'MM09')
-                        buffer.fids(:,rr,3)      = MM09.fids; % DIFF
-                        buffer.specs(:,rr,3)     = MM09.specs;
-                    else % scnh
-                    buffer.fids(:,rr,3)      = buffer.fids(:,rr,2) - buffer.fids(:,rr,1); % DIFF % scnh
-                    buffer.specs(:,rr,3)     = buffer.specs(:,rr,2) - buffer.specs(:,rr,1); % scnh
-                   end                  
-                case 'GSH'
-                    MM12     = op_gaussianPeak(n,sw,Bo,centerFreq,0.07*hzppm,1.20,2*oneProtonArea/gaussianArea);
-                    MM12     = op_dccorr(MM12,'p');
-                    MM14     = op_gaussianPeak(n,sw,Bo,centerFreq,0.095*hzppm,1.385,2*oneProtonArea/gaussianArea);
-                    MM14     = op_dccorr(MM14,'p');
-                    if strcmp(buffer.name{rr}, 'MM14')
-                        buffer.fids(:,rr,3)      = MM14.fids; % DIFF
-                        buffer.specs(:,rr,3)     = MM14.specs;
-                    elseif strcmp(buffer.name{rr}, 'MM12')
-                        buffer.fids(:,rr,3)      = MM12.fids; % DIFF
-                        buffer.specs(:,rr,3)     = MM12.specs;
-                    end
-                case 'PE398'
-                    MM12     = op_gaussianPeak(n,sw,Bo,centerFreq,0.07*hzppm,1.20,2*oneProtonArea/gaussianArea);
-                    MM12     = op_dccorr(MM12,'p');
-                    MM14     = op_gaussianPeak(n,sw,Bo,centerFreq,0.095*hzppm,1.385,2*oneProtonArea/gaussianArea);
-                    MM14     = op_dccorr(MM14,'p');
-                    if strcmp(buffer.name{rr}, 'MM14')
-                        buffer.fids(:,rr,3)      = MM14.fids; % DIFF
-                        buffer.specs(:,rr,3)     = MM14.specs;
-                    elseif strcmp(buffer.name{rr}, 'MM12')
-                        buffer.fids(:,rr,3)      = MM12.fids; % DIFF
-                        buffer.specs(:,rr,3)     = MM12.specs;
-                    end                
-            end
-%            buffer.fids(:,rr,3)      = buffer.fids(:,rr,2) - buffer.fids(:,rr,1); % DIFF %scnh
-%            buffer.specs(:,rr,3)     = buffer.specs(:,rr,2) - buffer.specs(:,rr,1); %scnh
-            buffer.fids(:,rr,4)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,1); % SUM %scnh
-            buffer.specs(:,rr,4)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,1); %scnh
+        switch editTarget
+            case 'GABA'
+                % GABA-edited data have co-edited MM09 that we need to put
+                % in the DIFF. Therefore loop over metabolite names.
+                % If MM09, then don't subtract the ON and OFF out; instead mimic
+                % the co-edited MM09 signal in the DIFF by just a simple OFF MM09.
+                MM09    = op_gaussianPeak(n,sw,Bo,centerFreq,0.085*hzppm,0.915,3*oneProtonArea/gaussianArea);
+                MM09    = op_dccorr(MM09,'p');
+                if strcmp(buffer.name{rr}, 'MM09')
+                    buffer.fids(:,rr,3)      = MM09.fids; % DIFF
+                    buffer.specs(:,rr,3)     = MM09.specs;
+                else
+                    buffer.fids(:,rr,3)      = buffer.fids(:,rr,2) - buffer.fids(:,rr,1); % DIFF
+                    buffer.specs(:,rr,3)     = buffer.specs(:,rr,2) - buffer.specs(:,rr,1);
+                end
+            case 'GSH'
+                % GSH-edited data have co-edited MM14 and MM12 that we need to put
+                % in the DIFF. Therefore loop over metabolite names.
+                % If one of those, then don't subtract the ON and OFF out; instead mimic
+                % the co-edited signal in the DIFF by just a simple OFF MM14 or MM12.
+                MM12     = op_gaussianPeak(n,sw,Bo,centerFreq,0.07*hzppm,1.20,2*oneProtonArea/gaussianArea);
+                MM12     = op_dccorr(MM12,'p');
+                MM14     = op_gaussianPeak(n,sw,Bo,centerFreq,0.095*hzppm,1.385,2*oneProtonArea/gaussianArea);
+                MM14     = op_dccorr(MM14,'p');
+                if strcmp(buffer.name{rr}, 'MM14')
+                    buffer.fids(:,rr,3)      = MM14.fids; % DIFF
+                    buffer.specs(:,rr,3)     = MM14.specs;
+                elseif strcmp(buffer.name{rr}, 'MM12')
+                    buffer.fids(:,rr,3)      = MM12.fids; % DIFF
+                    buffer.specs(:,rr,3)     = MM12.specs;
+                else
+                    buffer.fids(:,rr,3)      = buffer.fids(:,rr,2) - buffer.fids(:,rr,1); % DIFF
+                    buffer.specs(:,rr,3)     = buffer.specs(:,rr,2) - buffer.specs(:,rr,1);
+                end
+            case 'PE322'
+                % PE-edited data 
+                    buffer.fids(:,rr,3)      = buffer.fids(:,rr,2) - buffer.fids(:,rr,1); % DIFF
+                    buffer.specs(:,rr,3)     = buffer.specs(:,rr,2) - buffer.specs(:,rr,1);   
+            case 'PE398'
+                % PE-edited data  have co-edited MM14 and MM12 that we need to put
+                % in the DIFF. Therefore loop over metabolite names.
+                % If one of those, then don't subtract the ON and OFF out; instead mimic
+                % the co-edited signal in the DIFF by just a simple OFF MM14 or MM12.
+                MM12     = op_gaussianPeak(n,sw,Bo,centerFreq,0.07*hzppm,1.20,2*oneProtonArea/gaussianArea);
+                MM12     = op_dccorr(MM12,'p');
+                MM14     = op_gaussianPeak(n,sw,Bo,centerFreq,0.095*hzppm,1.385,2*oneProtonArea/gaussianArea);
+                MM14     = op_dccorr(MM14,'p');
+                if strcmp(buffer.name{rr}, 'MM14')
+                    buffer.fids(:,rr,3)      = MM14.fids; % DIFF
+                    buffer.specs(:,rr,3)     = MM14.specs;
+                elseif strcmp(buffer.name{rr}, 'MM12')
+                    buffer.fids(:,rr,3)      = MM12.fids; % DIFF
+                    buffer.specs(:,rr,3)     = MM12.specs;
+                else
+                    buffer.fids(:,rr,3)      = buffer.fids(:,rr,2) - buffer.fids(:,rr,1); % DIFF
+                    buffer.specs(:,rr,3)     = buffer.specs(:,rr,2) - buffer.specs(:,rr,1);  
+                end
+            case 'Lac'
+                % Lac-edited data dont have co-edited MMS that we need to put
+                % in the DIFF. Therefore loop over metabolite names.
+                    buffer.fids(:,rr,3)      = buffer.fids(:,rr,2) - buffer.fids(:,rr,1); % DIFF
+                    buffer.specs(:,rr,3)     = buffer.specs(:,rr,2) - buffer.specs(:,rr,1);
         end
-        %% scnh
-        
-        if ~addMMFlag
-%             switch editTarget
-%                 case 'GABA'
-%                     % GABA-edited data have co-edited MM09 that we need to put
-%                     % in the DIFF. Therefore loop over metabolite names.
-%                     % If MM09, then don't subtract the ON and OFF out; instead mimic
-%                     % the co-edited MM09 signal in the DIFF by just a simple OFF MM09.
-%                     %                MM09    = op_gaussianPeak(n,sw,Bo,centerFreq,0.085*hzppm,0.915,3*oneProtonArea/gaussianArea);
-%                     %                MM09    = op_dccorr(MM09,'p');
-%                     %                if strcmp(buffer.name{rr}, 'MM09')
-%                     %                    buffer.fids(:,rr,3)      = MM09.fids; % DIFF
-%                     %                    buffer.specs(:,rr,3)     = MM09.specs;
-%                     %                else
-%                     buffer.fids(:,rr,3)      = buffer.fids(:,rr,2) - buffer.fids(:,rr,1); % DIFF
-%                     buffer.specs(:,rr,3)     = buffer.specs(:,rr,2) - buffer.specs(:,rr,1);
-%                     %                end
-%                 case 'GSH'
-%                     % GSH-edited data have co-edited MM14 and MM12 that we need to put
-%                     % in the DIFF. Therefore loop over metabolite names.
-%                     % If one of those, then don't subtract the ON and OFF out; instead mimic
-%                     % the co-edited signal in the DIFF by just a simple OFF MM14 or MM12.
-%                     %                MM12     = op_gaussianPeak(n,sw,Bo,centerFreq,0.07*hzppm,1.20,2*oneProtonArea/gaussianArea);
-%                     %                MM12     = op_dccorr(MM12,'p');
-%                     %                MM14     = op_gaussianPeak(n,sw,Bo,centerFreq,0.095*hzppm,1.385,2*oneProtonArea/gaussianArea);
-%                     %                MM14     = op_dccorr(MM14,'p');
-%                     %                if strcmp(buffer.name{rr}, 'MM14')
-%                     %                    buffer.fids(:,rr,3)      = MM14.fids; % DIFF
-%                     %                    buffer.specs(:,rr,3)     = MM14.specs;
-%                     %                elseif strcmp(buffer.name{rr}, 'MM12')
-%                     %                    buffer.fids(:,rr,3)      = MM12.fids; % DIFF
-%                     %                    buffer.specs(:,rr,3)     = MM12.specs;
-%                     %                else
-%                     buffer.fids(:,rr,3)      = buffer.fids(:,rr,2) - buffer.fids(:,rr,1); % DIFF
-%                     buffer.specs(:,rr,3)     = buffer.specs(:,rr,2) - buffer.specs(:,rr,1);
-%                     %                end
-%                 case 'PE322'
-%                     % PE-edited data
-%                     buffer.fids(:,rr,3)      = buffer.fids(:,rr,2) - buffer.fids(:,rr,1); % DIFF
-%                     buffer.specs(:,rr,3)     = buffer.specs(:,rr,2) - buffer.specs(:,rr,1);
-%                 case 'PE398'
-%                     % PE-edited data  have co-edited MM14 and MM12 that we need to put
-%                     % in the DIFF. Therefore loop over metabolite names.
-%                     % If one of those, then don't subtract the ON and OFF out; instead mimic
-%                     % the co-edited signal in the DIFF by just a simple OFF MM14 or MM12.
-%                     %                MM12     = op_gaussianPeak(n,sw,Bo,centerFreq,0.07*hzppm,1.20,2*oneProtonArea/gaussianArea);
-%                     %                MM12     = op_dccorr(MM12,'p');
-%                     %                MM14     = op_gaussianPeak(n,sw,Bo,centerFreq,0.095*hzppm,1.385,2*oneProtonArea/gaussianArea);
-%                     %                MM14     = op_dccorr(MM14,'p');
-%                     %                if strcmp(buffer.name{rr}, 'MM14')
-%                     %                    buffer.fids(:,rr,3)      = MM14.fids; % DIFF
-%                     %                    buffer.specs(:,rr,3)     = MM14.specs;
-%                     %                elseif strcmp(buffer.name{rr}, 'MM12')
-%                     %                    buffer.fids(:,rr,3)      = MM12.fids; % DIFF
-%                     %                    buffer.specs(:,rr,3)     = MM12.specs;
-%                     %                else
-%                     buffer.fids(:,rr,3)      = buffer.fids(:,rr,2) - buffer.fids(:,rr,1); % DIFF
-%                     buffer.specs(:,rr,3)     = buffer.specs(:,rr,2) - buffer.specs(:,rr,1);
-%                     %                end
-%                 case 'Lac'
-%                     % Lac-edited data dont have co-edited MMS that we need to put
-%                     % in the DIFF. Therefore loop over metabolite names.
-%                     buffer.fids(:,rr,3)      = buffer.fids(:,rr,2) - buffer.fids(:,rr,1); % DIFF
-%                     buffer.specs(:,rr,3)     = buffer.specs(:,rr,2) - buffer.specs(:,rr,1);
-%             end
-            buffer.fids(:,rr,3)      = buffer.fids(:,rr,2) - buffer.fids(:,rr,1); % DIFF % scnh
-            buffer.specs(:,rr,3)     = buffer.specs(:,rr,2) - buffer.specs(:,rr,1); % scnh
-            buffer.fids(:,rr,4)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,1); % SUM
-            buffer.specs(:,rr,4)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,1);
-        end % ~addMMFlag
+        buffer.fids(:,rr,4)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,1); % SUM
+        buffer.specs(:,rr,4)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,1);
     end
-    
 elseif strcmp(sequence, 'HERMES') || strcmp(sequence, 'HERCULES')
     % Determine maximum signal intensities for water and NAA in each
     % sub-spectrum.
@@ -458,52 +404,37 @@ elseif strcmp(sequence, 'HERMES') || strcmp(sequence, 'HERCULES')
     
     % Now generate the DIFFs and the SUM.
     % Making sure to include co-edited MMs appropriately in the DIFF.
-    
-    %% scnh
-
+    MM09    = op_gaussianPeak(n,sw,Bo,centerFreq,0.085*hzppm,0.915,3*oneProtonArea/gaussianArea);
+    MM09    = op_dccorr(MM09,'p');
+    MM12     = op_gaussianPeak(n,sw,Bo,centerFreq,0.07*hzppm,1.20,2*oneProtonArea/gaussianArea);
+    MM12     = op_dccorr(MM12,'p');
+    MM14     = op_gaussianPeak(n,sw,Bo,centerFreq,0.095*hzppm,1.385,2*oneProtonArea/gaussianArea);
+    MM14     = op_dccorr(MM14,'p');
     for rr = 1:length(buffer.name)
-        if addMMFlag
-            MM09    = op_gaussianPeak(n,sw,Bo,centerFreq,0.085*hzppm,0.915,3*oneProtonArea/gaussianArea);
-            MM09    = op_dccorr(MM09,'p');
-            MM12     = op_gaussianPeak(n,sw,Bo,centerFreq,0.07*hzppm,1.20,2*oneProtonArea/gaussianArea);
-            MM12     = op_dccorr(MM12,'p');
-            MM14     = op_gaussianPeak(n,sw,Bo,centerFreq,0.095*hzppm,1.385,2*oneProtonArea/gaussianArea);
-            MM14     = op_dccorr(MM14,'p');
-    
-            if strcmp(buffer.name{rr}, 'MM09')
-                buffer.fids(:,rr,5)      = MM09.fids; % DIFF1 (GABA)
-                buffer.specs(:,rr,5)     = MM09.specs;
-                buffer.fids(:,rr,6)      = buffer.fids(:,rr,3) + buffer.fids(:,rr,4) - buffer.fids(:,rr,1) - buffer.fids(:,rr,2); % DIFF2 (GSH)
-                buffer.specs(:,rr,6)     = buffer.specs(:,rr,3) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,2);
-            elseif strcmp(buffer.name{rr}, 'MM14')
-                buffer.fids(:,rr,5)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,4) - buffer.fids(:,rr,1) - buffer.fids(:,rr,3); % DIFF1 (GABA)
-                buffer.specs(:,rr,5)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,3);
-                buffer.fids(:,rr,6)      = MM14.fids; % DIFF2 (GSH)
-                buffer.specs(:,rr,6)     = MM14.specs;
-            elseif strcmp(buffer.name{rr}, 'MM12')
-                buffer.fids(:,rr,5)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,4) - buffer.fids(:,rr,1) - buffer.fids(:,rr,3); % DIFF1 (GABA)
-                buffer.specs(:,rr,5)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,3);
-                buffer.fids(:,rr,6)      = MM12.fids; % DIFF2 (GSH)
-                buffer.specs(:,rr,6)     = MM12.specs;
-            else % uncomment, Feb 14, 2022 scnh
-                buffer.fids(:,rr,5)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,4) - buffer.fids(:,rr,1) - buffer.fids(:,rr,3); % DIFF1 (GABA)
-                buffer.specs(:,rr,5)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,3);
-                buffer.fids(:,rr,6)      = buffer.fids(:,rr,3) + buffer.fids(:,rr,4) - buffer.fids(:,rr,1) - buffer.fids(:,rr,2); % DIFF2 (GSH)
-                buffer.specs(:,rr,6)     = buffer.specs(:,rr,3) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,2);
-            end
-            buffer.fids(:,rr,7)      = buffer.fids(:,rr,1) + buffer.fids(:,rr,3) + buffer.fids(:,rr,2) + buffer.fids(:,rr,4); % SUM
-            buffer.specs(:,rr,7)     = buffer.specs(:,rr,1) + buffer.specs(:,rr,3) + buffer.specs(:,rr,2) + buffer.specs(:,rr,4);
-        end
-        if ~addMMFlag
+        if strcmp(buffer.name{rr}, 'MM09')
+            buffer.fids(:,rr,5)      = MM09.fids; % DIFF1 (GABA)
+            buffer.specs(:,rr,5)     = MM09.specs;
+            buffer.fids(:,rr,6)      = buffer.fids(:,rr,3) + buffer.fids(:,rr,4) - buffer.fids(:,rr,1) - buffer.fids(:,rr,2); % DIFF2 (GSH)
+            buffer.specs(:,rr,6)     = buffer.specs(:,rr,3) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,2);
+        elseif strcmp(buffer.name{rr}, 'MM14')
+            buffer.fids(:,rr,5)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,4) - buffer.fids(:,rr,1) - buffer.fids(:,rr,3); % DIFF1 (GABA)
+            buffer.specs(:,rr,5)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,3);
+            buffer.fids(:,rr,6)      = MM14.fids; % DIFF2 (GSH)
+            buffer.specs(:,rr,6)     = MM14.specs;
+        elseif strcmp(buffer.name{rr}, 'MM12')
+            buffer.fids(:,rr,5)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,4) - buffer.fids(:,rr,1) - buffer.fids(:,rr,3); % DIFF1 (GABA)
+            buffer.specs(:,rr,5)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,3);
+            buffer.fids(:,rr,6)      = MM12.fids; % DIFF2 (GSH)
+            buffer.specs(:,rr,6)     = MM12.specs;
+        else
             buffer.fids(:,rr,5)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,4) - buffer.fids(:,rr,1) - buffer.fids(:,rr,3); % DIFF1 (GABA)
             buffer.specs(:,rr,5)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,3);
             buffer.fids(:,rr,6)      = buffer.fids(:,rr,3) + buffer.fids(:,rr,4) - buffer.fids(:,rr,1) - buffer.fids(:,rr,2); % DIFF2 (GSH)
             buffer.specs(:,rr,6)     = buffer.specs(:,rr,3) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,2);
-            buffer.fids(:,rr,7)      = buffer.fids(:,rr,1) + buffer.fids(:,rr,3) + buffer.fids(:,rr,2) + buffer.fids(:,rr,4); % SUM
-            buffer.specs(:,rr,7)     = buffer.specs(:,rr,1) + buffer.specs(:,rr,3) + buffer.specs(:,rr,2) + buffer.specs(:,rr,4);
         end
+        buffer.fids(:,rr,7)      = buffer.fids(:,rr,1) + buffer.fids(:,rr,3) + buffer.fids(:,rr,2) + buffer.fids(:,rr,4); % SUM
+        buffer.specs(:,rr,7)     = buffer.specs(:,rr,1) + buffer.specs(:,rr,3) + buffer.specs(:,rr,2) + buffer.specs(:,rr,4);
     end
-
 end
 
 % Copy over the FID, specs, dims, and the metabolite names
@@ -521,11 +452,7 @@ BASIS.fids  = BASIS.fids ./ BASIS.scale;
 BASIS.specs = BASIS.specs ./ BASIS.scale;
 
 % Save as *.mat file
-%save(['BASIS' save_str '.mat'], 'BASIS');
-%save(['BASIS' '_' vendor '_' sequence '_' localization '_' editTarget ''
-%num2str(TE) '' save_str '.mat'], 'BASIS'); %scnh
-out_name = ['BASIS' '_' vendor '_' sequence '_' localization '_' editTarget '' num2str(TE) '' save_str '.mat']; %scnh
-save(fullfile(folder,out_name),'BASIS'); %scnh
+save(['BASIS' save_str '.mat'], 'BASIS');
 
 end
 

@@ -52,7 +52,7 @@ switch(vendor{1})
             elseif strcmp(MRS_opt.seq, 'HERMES')
                 editWaveform1       = 'sg100_100_0_14ms_88hz.pta';  % name of 1st single editing pulse waveform. [4.56ppm]
                 editWaveform2       = 'sg100_100_0_14ms_88hz.pta';  % name of 2nd single editing pulse waveform. [1.9ppm]
-                editWaveform3       = 'dl_Philips_4_56_1_90_14ms.pta';   % name of 1st dual editing pulse waveform. [4.56ppm 1.90ppm]
+                editWaveform3       = 'dl_Philips_4_56_1_90.pta';   % name of 1st dual editing pulse waveform. [4.56ppm 1.90ppm]
                 editWaveform4       = 'sg100_100_0_14ms_88hz.pta';  % name of non-editing pulse waveform. [non-editing]
             else                                                    % MEGA PRESS
                 editWaveform1       = 'sg100_100_0_14ms_88hz.pta';  % name of 1st single editing pulse waveform. [1.9ppm]

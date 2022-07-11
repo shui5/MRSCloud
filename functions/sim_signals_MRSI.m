@@ -36,8 +36,8 @@ for ii = 1:length(MRS_opt)
     MRS_opt(ii).d_eqm      = MRS_opt(ii).d;
     
     %% Start the sequence
-    % Initialize structures:
     
+    % Initialize structures:
     switch (mega_or_hadam)
         case 'UnEdited_se_MRSI'
             outA=struct([]);
@@ -52,12 +52,13 @@ for ii = 1:length(MRS_opt)
     % fully slice-selective sequence
     switch (mega_or_hadam)
         case 'UnEdited_se_MRSI'
-            for Y=1:length(MRS_opt(ii).y)
-                [outA_temp{Y}]  = sim_press_shaped_ultrafast_exc(MRS_opt(ii),MRS_opt(ii).Qexc{Y},MRS_opt(ii).d_eqm);
-                outA_temp{Y}    = sim_apply_pfilter(outA_temp{Y},MRS_opt(ii).H,+1);     %Apply p_filter
-                outA_temp{Y}    = sim_evolve(outA_temp{Y},MRS_opt(ii).H,(delays(1))/1000);
-                [outA_temp{Y}]  = sim_press_shaped_ultrafast_Ref2(MRS_opt(ii),MRS_opt(ii).Qrefoc{Y},outA_temp{Y});
-            end
+             parfor Y=1:length(MRS_opt(ii).y) %Use this if you do have the MATLAB parallel processing toolbox
+                [outA_temp{Y}]     = sim_press_shaped_ultrafast_exc(MRS_opt(ii),MRS_opt(ii).Qexc{Y},MRS_opt(ii).d_eqm);
+ %               d_A = MRS_opt(ii).d;
+                outA_temp{Y}=sim_apply_pfilter(outA_temp{Y},MRS_opt(ii).H,+1);     %Apply p_filter
+                outA_temp{Y}=sim_evolve(outA_temp{Y},MRS_opt(ii).H,(delays(1))/1000);
+                [outA_temp{Y}]     = sim_press_shaped_ultrafast_Ref2(MRS_opt(ii),MRS_opt(ii).Qrefoc{Y},outA_temp{Y});
+            end  %end of spatial loop (parfor) in y direction.
             
         case 'Edited_se_MRSI'
             MRS_opt(ii).editRFonA  = rf_freqshift(MRS_opt(ii).editRF1,MRS_opt(ii).editTp,(MRS_opt(ii).centreFreq-editOnFreq1)*MRS_opt(ii).Bfield*MRS_opt(ii).gamma/1e6);
@@ -67,7 +68,7 @@ for ii = 1:length(MRS_opt)
             
             parfor Y=1:length(MRS_opt(ii).y)
                 %for Y=1:length(MRS_opt(ii).y)
-                [d{Y}]  = sim_press_shaped_ultrafast_exc(MRS_opt(ii).H,MRS_opt(ii).Qexc{Y},MRS_opt(ii).d_eqm);
+                [d{Y}]  = sim_press_shaped_ultrafast_exc(MRS_opt(ii),MRS_opt(ii).Qexc{Y},MRS_opt(ii).d_eqm);
                 d{Y}    = sim_apply_pfilter(d{Y},MRS_opt(ii).H,+1);
                 d{Y}    = sim_evolve(d{Y},MRS_opt(ii).H,(delays(1))/1000);
                 [d_out1{Y},d_out2{Y}]       = sim_MRSI_ultrafast_edit1(d{Y},MRS_opt(ii).H,MRS_opt(ii).QoutONA,MRS_opt(ii).QoutONB,+1,delays(2));
@@ -98,11 +99,11 @@ for ii = 1:length(MRS_opt)
     
     % Now running the tail end of the seqeunce
         switch (mega_or_hadam)
-            case 'UnEdited_se_MRSI'
-                d_Ay        = sim_apply_pfilter(d_Ay,MRS_opt(ii).H,-1);
-                d_Ay        = sim_evolve(d_Ay,MRS_opt(ii).H,(delays(2))/1000);
-                [outA]      = sim_readout(d_Ay,MRS_opt.H,MRS_opt.Npts,MRS_opt.sw,MRS_opt.lw,270); % Readout along y (90 degree phase);
-                outA.ppm    = outA.ppm-(4.68-MRS_opt.centreFreq); % sim_readout used 4.65, override ppm scale from 4.65 to 3.0, % scnh
+         case 'UnEdited_se_MRSI'
+            d_Ay=sim_apply_pfilter(d_Ay,MRS_opt(ii).H,-1);
+            d_Ay=sim_evolve(d_Ay,MRS_opt(ii).H,(delays(2))/1000);                     %Evolve by (delays(1)+delays(2))/2
+            [outA]                  = sim_readout(d_Ay,MRS_opt.H,MRS_opt.Npts,MRS_opt.sw,MRS_opt.lw,270);            %Readout along y (90 degree phase);
+            outA.ppm                = outA.ppm-(4.68-MRS_opt.centreFreq); % sim_readout used 4.65, override ppm scale from 4.65 to 3.0, % scnh
             case 'Edited_se_MRSI'
                 [outA, outB] = sim_edited_MRSI_ultrafast_readout(MRS_opt(ii),d_Ay,d_By);
         end
@@ -155,8 +156,8 @@ end
 end
 
 %Nested Function #1
-function [d_out1] = sim_press_shaped_ultrafast_exc(hamiltonian,Qexc,d1)
-d_out1   = apply_propagator_exc(d1,hamiltonian,Qexc);
+function [d_out1] = sim_press_shaped_ultrafast_exc(MRS_opt,Qexc,d1)
+d_out1   = apply_propagator_exc(d1,MRS_opt.H,Qexc);
 end
 
 %Nested Function #2

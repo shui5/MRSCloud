@@ -1,7 +1,7 @@
 function basis = run_simulations_cloud(json_input)
 
 % Default list
-% "metablist": ["Ala","Asc","Asp","Cit","Cr","EA","EtOH","GABA","GPC","GSH","Gln","Glu","Gly","H2O","Ins","Lac","NAA","NAAG","PCh","PCr","PE","Phenyl","Scyllo","Ser","Tau","Tyros","bHB"],
+% "metablist": ["Ala","Asc","Asp","Cit","Cr","CrCH2","EA","EtOH","GABA","GPC","GSH","Gln","Glu","Gly","H2O","mI","Lac","NAA","NAAG","PCh","PCr","PE","Phenyl","sI","Ser","Tau","Tyros","bHB"],
 
 % Additional metabolitse as per request.
 % "metablist": ["2HG","Cystat","HCar","Lys","Thr","Val","Ace","AcAc"]
@@ -11,7 +11,6 @@ json_input      = '/Users/steve/Documents/My_Studies/MRSCloud/simMRS.json';
 sim_paras_json  = loadjson(json_input);
 
 metab_default   = sim_paras_json.private.metab_default;
-%metab_default_2 = sim_paras_json.private.metab_default_2;
 metablist       = horzcat(metab_default,sim_paras_json.userInput.metablist);
 vendor          = sim_paras_json.userInput.vendor;          % Options: GE/Philips/Siemens/Universal_Philips/Universal_Siemens
 mega_or_hadam   = sim_paras_json.userInput.mega_or_hadam;   % Options: UnEdited/MEGA/HERMES/HERCULES
@@ -20,7 +19,7 @@ editTarget      = sim_paras_json.userInput.editTarget;      % Options: GABA/GSH/
 TE              = sim_paras_json.userInput.TE;              % TE for UnEdited and MEGA only, HERMES and HERCULES are internally fixed at TE=80 ms
 editOn          = sim_paras_json.userInput.editOn;          % For MEGA only, HERMES and HERCULES are internally fixed
 editOff         = sim_paras_json.userInput.editOff;         % For MEGA only, HERMES and HERCULES are internally fixed
-editTp         = sim_paras_json.userInput.editTp;         % For MEGA only, HERMES and HERCULES are internally fixed
+editTp          = sim_paras_json.userInput.editTp;          % For MEGA only, HERMES and HERCULES are internally fixed
 spatial_points  = sim_paras_json.userInput.spatial_points;  % Number of spatial points to simulate
 
 % if strcmp(mega_or_hadam, 'HERMES') || strcmp(mega_or_hadam, 'HERCULES')
@@ -45,7 +44,7 @@ delete([save_dir,'/*']);
 % metablist       = {'GABA'};
 % vendor          = {'Philips'};  %Options: Philips, Philips_universal, Siemens or GE
 % mega_or_hadam   = {'HERCULES'}; %Options: UnEdited, MEGA, HERMES or HERCULES
-% "mega_or_hadam": ["Edited_se_MRSI"],
+% "mega_or_hadam": ["Edited_se_MRSI"],["UnEdited_se_MRSI"]
 % localization    = {'PRESS'};    %Options: PRESS or sLASER
 
 % % for UnEdited and MEGA
@@ -64,31 +63,20 @@ delete([save_dir,'/*']);
 
 for iii = 1:length(metablist)
     switch(mega_or_hadam{1})
-        case 'UnEdited'
-            ppm_min                = [1.1];
-            ppm_max                = [1.5];
         case {'MEGA','Edited_se_MRSI'}
-            %            ppm_min                = [1.1];
-            %            ppm_max                = [1.5];
             A                      = editOn;       %single-lobe pulse
             B                      = editOff;      %single-lobe pulse
             MRS_temp.editTp        = editTp;       %for MEGA only
             MRS_temp.editON        = num2cell([A B]);
-            
         case 'HERMES'
             TE                     = 80;
-            %            ppm_min                = [2.8 2.75];
-            %            ppm_max                = [3.2 3.15];
             A                      = 4.56;          %single-lobe pulse
             B                      = 1.90;          %single-lobe pulse
             C                      = (4.56+1.9)/2;  %dual-lobe pulse
             D                      = 7.50;          %single-lobe pulse
             MRS_temp.editON        = num2cell([A B C D]);
-            
         case 'HERCULES'
             TE                     = 80;
-            %            ppm_min                = [2.8 2.75];
-            %            ppm_max                = [3.2 3.15];
             A                      = 4.58;          %single-lobe pulse
             B                      = 4.18;          %single-lobe pulse
             C                      = (4.58+1.9)/2;  %dual-lobe pulse
@@ -111,8 +99,6 @@ for iii = 1:length(metablist)
     MRS_temp.metab                 = metab{Nmetab}; %{ii};
     MRS_temp.Nmetab                = Nmetab; %ii;
     MRS_temp.TEs                   = num2cell(TE);
-    %    MRS_temp.ppm_min               = ppm_min;%(ii);
-    %    MRS_temp.ppm_max               = ppm_max;%(ii);
     MRS_temp.save_dir              = save_dir; % scnh
     MRS_temp                       = load_parameters(MRS_temp); % This is the function you need to edit to change the simulation parameters (not specified above this line)
     MRS_opt                        = MRS_temp; % Creating a struct variable with dimens >=1;
@@ -121,15 +107,15 @@ for iii = 1:length(metablist)
     switch(localization{1})
         case 'PRESS'
             if strcmp(mega_or_hadam, 'HERMES') || strcmp(mega_or_hadam, 'HERCULES')
-                [MRS_opt,outA, outB, outC, outD]  = sim_signals(MRS_opt); %This function saves mat files for each sub-spectra simuation
+                [MRS_opt,outA, outB, outC, outD]  = sim_signals(MRS_opt);
             elseif strcmp(mega_or_hadam, 'MEGA')
-                [MRS_opt,outA, outB]              = sim_signals(MRS_opt); %This function saves mat files for each sub-spectra simuation
-            elseif strcmp(mega_or_hadam, 'UnEdited_se_MRSI')
-                [MRS_opt,outA]                    = sim_signals_unedited_MRSI(MRS_opt); %This function saves mat files for each sub-spectra simuation
-            elseif strcmp(mega_or_hadam, 'Edited_se_MRSI')
-                [MRS_opt,outA, outB]              = sim_signals_MRSI(MRS_opt); %This function saves mat files for each sub-spectra simuation
+                [MRS_opt,outA, outB]              = sim_signals(MRS_opt);
+            elseif strcmp(mega_or_hadam, 'Edited_se_MRSI') || strcmp(mega_or_hadam, 'Edited_se_MRSI')
+                [MRS_opt,outA, outB]              = sim_signals_MRSI(MRS_opt);
+            elseif strcmp(mega_or_hadam, 'UnEdited_se_MRSI') || strcmp(mega_or_hadam, 'Edited_se_MRSI')
+                [MRS_opt,outA]                    = sim_signals_MRSI(MRS_opt);
             else
-                [MRS_opt,outA]                    = sim_signals(MRS_opt); %This function saves mat files for each sub-spectra simuation
+                [MRS_opt,outA]                    = sim_signals(MRS_opt);
             end
         case 'sLASER'
             if strcmp(mega_or_hadam, 'HERMES') || strcmp(mega_or_hadam, 'HERCULES')
@@ -141,13 +127,11 @@ for iii = 1:length(metablist)
                     case {'Philips', 'Siemens'}
                         [MRS_opt,outA, outB, outC, outD]  = sim_signals_sLASER(MRS_opt); %This function saves mat files for each sub-spectra simuation
                 end
-                elseif strcmp(mega_or_hadam, 'MEGA')
+            elseif strcmp(mega_or_hadam, 'MEGA')
                 [MRS_opt,outA, outB]              = sim_signals_sLASER(MRS_opt); %This function saves mat files for each sub-spectra simuation
             else
                 [MRS_opt,outA]                    = sim_signals_sLASER(MRS_opt); %This function saves mat files for each sub-spectra simuation
             end
-%        case 'UnEdited_se_MRSI'
-%            [MRS_opt,outA]                    = sim_signals_lean(MRS_opt); %This function saves mat files for each sub-spectra simuation
     end
 end % for metablist
 

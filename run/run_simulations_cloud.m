@@ -110,9 +110,9 @@ for iii = 1:length(metablist)
                 [MRS_opt,outA, outB, outC, outD]  = sim_signals(MRS_opt);
             elseif strcmp(mega_or_hadam, 'MEGA')
                 [MRS_opt,outA, outB]              = sim_signals(MRS_opt);
-            elseif strcmp(mega_or_hadam, 'Edited_se_MRSI') || strcmp(mega_or_hadam, 'Edited_se_MRSI')
+            elseif strcmp(mega_or_hadam, 'Edited_se_MRSI')
                 [MRS_opt,outA, outB]              = sim_signals_MRSI(MRS_opt);
-            elseif strcmp(mega_or_hadam, 'UnEdited_se_MRSI') || strcmp(mega_or_hadam, 'Edited_se_MRSI')
+            elseif strcmp(mega_or_hadam, 'UnEdited_se_MRSI')
                 [MRS_opt,outA]                    = sim_signals_MRSI(MRS_opt);
             else
                 [MRS_opt,outA]                    = sim_signals(MRS_opt);

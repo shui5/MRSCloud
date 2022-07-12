@@ -1,7 +1,6 @@
-*.pta
 *.zip
-buildall_linux_SH.m
+*.json
 manuscript
 misc
-pulses
+pulses_vendors
 generate_waveform

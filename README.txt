@@ -1,11 +1,11 @@
 MRSCloud Documentation
 
-MRSCloud is a cloud-based MATLAB executable for performing metabolites simulations to generate basis sets for 3T magnetic resonance spectroscopy (MRS) data. Visit https://braingps.mricloud.org/mrs-cloud for the online platform. Registration is required to use.
+MRSCloud is a cloud-based MATLAB executable for performing metabolites simulation to generate basis sets for 3T magnetic resonance spectroscopy (MRS) data. Visit https://braingps.mricloud.org/mrs-cloud for the online platform. Registration is required to use.
 
 Source code is published on Github https://github.com/shui5/MRSCloud
 
 Features:
-MRSCloud supports simulation for up to 34 metabolites (26 commonly seen brain metabolites and 8 other metabolites for specific interests (see following list for details). Metabolites with complex J coupling spin system including (Cystat, HCar and Lys) may significantly increase simulation time.
+MRSCloud supports simulations for up to 34 metabolites (26 commonly seen brain metabolites and 8 other metabolites for specific interests (see following list for details). Metabolites with complex J coupling spin system including (Cystat, HCar and Lys) may significantly increase simulation time.
 
 1.  Alanine(Ala)
 2.  Ascorbic Acid(Asc)
@@ -56,8 +56,8 @@ Visit https://braingps.mricloud.org/mrs-cloud
 5.  Submit the request
 6.  Go to the 'My job status' tap to check the status of the simulation. 
 7.  Download the basis set (in .zip format) when it is ready.
-8.  Unzip the file and the basis set is save in two formats (.BASIS and .mat). The basis set in .BASIS format is compatibles with LCModel and and in .mat format is compatibles with Osprey.
-9.  The .mat basis set contains all FIDs and spectral data which can be converted to other format for other fitting tools.
+8.  Unzip the file and the basis set is saved in two formats (.BASIS and .mat). The basis set in .BASIS format is compatible with LCModel and the one in .mat format is compatible with Osprey.
+9.  The .mat basis set contains all FIDs and spectral data which can be converted to other formats for other fitting tools.
 
 10. For advanced users, visit https://github.com/shui5/MRSCloud for the source code.
 11. Setup parameters in simMRS.json

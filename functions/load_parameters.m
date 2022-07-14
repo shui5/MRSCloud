@@ -2,6 +2,7 @@ function MRS_opt = load_parameters(MRS_opt)
 
 spinSys         = MRS_opt.metab;
 vendor          = MRS_opt.vendor;
+localization    = MRS_opt.localization;
 %metabolite      = MRS_opt.metab;
 %localization    = MRS_temp.localization;
 % Define spatial resolution of simulation grid
@@ -19,6 +20,14 @@ if strcmp(vendor, 'Siemens')||strcmp(vendor, 'Universal_Siemens')
     Bfield = 2.89;    % Siemens magnetic field strength [Tesla]
 else
     Bfield = 3.0;     % Philips magnetic field strength [Tesla]
+end
+
+if strcmp(localization, 'STEAM_7T')
+    if strcmp(vendor, 'Siemens')
+        Bfield = 6.98; % [Tesla]
+    else
+        Bfield = 7.0;  % [Tesla]
+    end
 end
 
 MRS_opt.fovX    = fovX;             % size of the full simulation Field of View in the x-direction [cm]
@@ -438,8 +447,10 @@ if strcmp(MRS_opt.seq, 'UnEdited_se_MRSI')||strcmp(MRS_opt.seq, 'Edited_se_MRSI'
     end
     MRS_opt.Qexc = Qexc;
 end
+
+if strcmp(MRS_opt.seq, 'PRESS')||strcmp(MRS_opt.seq, 'sLASER')
     parfor X=1:length(MRS_opt.x)  %Use this if you do have the MATLAB parallel processing toolbox
         [Qrefoc{X}]  = calc_shapedRF_propagator_refoc(MRS_opt.H,MRS_opt.refRF,MRS_opt.refTp,MRS_opt.flipAngle,    0,MRS_opt.y(X),MRS_opt.Gx);
     end
     MRS_opt.Qrefoc = Qrefoc;
-
+end

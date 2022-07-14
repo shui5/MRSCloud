@@ -21,6 +21,7 @@ editOn          = sim_paras_json.userInput.editOn;          % For MEGA only, HER
 editOff         = sim_paras_json.userInput.editOff;         % For MEGA only, HERMES and HERCULES are internally fixed
 editTp          = sim_paras_json.userInput.editTp;          % For MEGA only, HERMES and HERCULES are internally fixed
 spatial_points  = sim_paras_json.userInput.spatial_points;  % Number of spatial points to simulate
+tm              = sim_paras_json.userInput.tm;
 
 % if strcmp(mega_or_hadam, 'HERMES') || strcmp(mega_or_hadam, 'HERCULES')
 %     metablist       = horzcat(metab_default,metab_default_2,sim_paras_json.userInput.metablist);
@@ -83,7 +84,6 @@ for iii = 1:length(metablist)
             D                      = (4.18+1.9)/2;  %dual-lobe pulse
             MRS_temp.editON        = num2cell([A B C D]);
     end
-    
     MRS_temp.flipAngle             = flipAngle;        % Flip angle degrees
     MRS_temp.centreFreq            = centreFreq;       % Center frequency of MR spectrum [ppm]
     MRS_temp.edit_flipAngle        = edit_flipAngle;   % Edited flip angle
@@ -99,6 +99,7 @@ for iii = 1:length(metablist)
     MRS_temp.metab                 = metab{Nmetab}; %{ii};
     MRS_temp.Nmetab                = Nmetab; %ii;
     MRS_temp.TEs                   = num2cell(TE);
+    MRS_temp.tm                    = tm; % mixing time [ms]
     MRS_temp.save_dir              = save_dir; % scnh
     MRS_temp                       = load_parameters(MRS_temp); % This is the function you need to edit to change the simulation parameters (not specified above this line)
     MRS_opt                        = MRS_temp; % Creating a struct variable with dimens >=1;
@@ -131,6 +132,10 @@ for iii = 1:length(metablist)
                 [MRS_opt,outA, outB]              = sim_signals_sLASER(MRS_opt); %This function saves mat files for each sub-spectra simuation
             else
                 [MRS_opt,outA]                    = sim_signals_sLASER(MRS_opt); %This function saves mat files for each sub-spectra simuation
+            end
+        case 'STEAM 7T'
+            if strcmp(mega_or_hadam, 'UnEdited')
+                [MRS_opt,out]                    = sim_signals_STEAM(MRS_opt);
             end
     end
 end % for metablist

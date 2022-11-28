@@ -14,16 +14,26 @@ for ii = 1:length(MRS_opt)
         case 'MEGA'
             editOnFreq1 = MRS_opt(ii).editOnFreq1;
             editOnFreq2 = MRS_opt(ii).editOnFreq2;
-        case 'HERMES'
+        case {'HERMES', 'HERCULES', 'HERMES_GABA_GSH_EtOH'}
             editOnFreq1 = MRS_opt(ii).editOnFreq1;
             editOnFreq2 = MRS_opt(ii).editOnFreq2;
             editOnFreq3 = MRS_opt(ii).editOnFreq3;
             editOnFreq4 = MRS_opt(ii).editOnFreq4;
-        case 'HERCULES'
-            editOnFreq1 = MRS_opt(ii).editOnFreq1;
-            editOnFreq2 = MRS_opt(ii).editOnFreq2;
-            editOnFreq3 = MRS_opt(ii).editOnFreq3;
-            editOnFreq4 = MRS_opt(ii).editOnFreq4;
+%         case 'HERMES'
+%             editOnFreq1 = MRS_opt(ii).editOnFreq1;
+%             editOnFreq2 = MRS_opt(ii).editOnFreq2;
+%             editOnFreq3 = MRS_opt(ii).editOnFreq3;
+%             editOnFreq4 = MRS_opt(ii).editOnFreq4;
+%         case 'HERMES_GABA_GSH_EtOH'
+%             editOnFreq1 = MRS_opt(ii).editOnFreq1;
+%             editOnFreq2 = MRS_opt(ii).editOnFreq2;
+%             editOnFreq3 = MRS_opt(ii).editOnFreq3;
+%             editOnFreq4 = MRS_opt(ii).editOnFreq4;
+%         case 'HERCULES'
+%             editOnFreq1 = MRS_opt(ii).editOnFreq1;
+%             editOnFreq2 = MRS_opt(ii).editOnFreq2;
+%             editOnFreq3 = MRS_opt(ii).editOnFreq3;
+%             editOnFreq4 = MRS_opt(ii).editOnFreq4;
     end
     
     %     if ~strcmp(mega_or_hadam, 'un_edited')
@@ -141,7 +151,7 @@ for ii = 1:length(MRS_opt)
             MRS_opt(ii).d = d_A; %From here, transfer to the fminsearch loop
             
             %Create the propagators for editON
-            if strcmp(MRS_opt(ii).seq, 'HERCULES') || strcmp(MRS_opt(ii).seq, 'HERMES')
+            if strcmp(MRS_opt(ii).seq, 'HERCULES') || strcmp(MRS_opt(ii).seq, 'HERMES') || strcmp(MRS_opt(ii).seq, 'HERMES_GABA_GSH_EtOH')
 
                     MRS_opt(ii).editRFonA  = rf_freqshift(MRS_opt(ii).editRF1,MRS_opt(ii).editTp,(MRS_opt(ii).centreFreq-editOnFreq1)*MRS_opt(ii).Bfield*MRS_opt(ii).gamma/1e6); %editOnFreq2
                     MRS_opt(ii).QoutONA    = calc_shapedRF_propagator_edit(MRS_opt(ii).H,MRS_opt(ii).editRFonA,MRS_opt(ii).editTp,MRS_opt(ii).edit_flipAngle,0);
@@ -246,7 +256,7 @@ for ii = 1:length(MRS_opt)
             outB=struct([]);
             outA_temp=cell(length(MRS_opt(ii).y));
             outB_temp=cell(length(MRS_opt(ii).y));
-        case {'HERMES', 'HERCULES'}
+        case {'HERMES', 'HERCULES', 'HERMES_GABA_GSH_EtOH'}
             outA=struct([]);
             outB=struct([]);
             outC=struct([]);
@@ -306,7 +316,7 @@ for ii = 1:length(MRS_opt)
         case 'MEGA'
             d_Ay=struct([]);
             d_By=struct([]);
-        case {'HERMES', 'HERCULES'}
+        case {'HERMES', 'HERCULES', 'HERMES_GABA_GSH_EtOH'}
             d_Ay=struct([]);
             d_By=struct([]);
             d_Cy=struct([]);
@@ -333,7 +343,7 @@ for ii = 1:length(MRS_opt)
         case 'MEGA'
             d_Ay         =sim_dAdd(d_Ay,outA_temp{Y});
             d_By         =sim_dAdd(d_By,outB_temp{Y});
-        case {'HERMES', 'HERCULES'}
+        case {'HERMES', 'HERCULES', 'HERMES_GABA_GSH_EtOH'}
             d_Ay         =sim_dAdd(d_Ay,outA_temp{Y});
             d_By         =sim_dAdd(d_By,outB_temp{Y});
             d_Cy         =sim_dAdd(d_Cy,outC_temp{Y});
@@ -360,7 +370,7 @@ for ii = 1:length(MRS_opt)
             outA.ppm                = outA.ppm-(4.68-MRS_opt.centreFreq); % sim_readout used 4.65, override ppm scale from 4.65 to 3.0, % scnh
         case 'MEGA'
             [outA,outB,~,~]         = sim_megapress_shaped_ultrafast_readout(MRS_opt(ii),d_Ay,d_By);%,d_Cy,d_Dy);
-        case {'HERMES', 'HERCULES'}
+        case {'HERMES', 'HERCULES', 'HERMES_GABA_GSH_EtOH'}
             [outA,outB,outC,outD]   = sim_megapress_shaped_ultrafast_readout(MRS_opt(ii),d_Ay,d_By,d_Cy,d_Dy);
     end
     
@@ -380,7 +390,7 @@ for ii = 1:length(MRS_opt)
         case 'MEGA'
             outA=op_ampScale(outA,1/numSims);
             outB=op_ampScale(outB,1/numSims);
-        case {'HERMES', 'HERCULES'}
+        case {'HERMES', 'HERCULES', 'HERMES_GABA_GSH_EtOH'}
             outA=op_ampScale(outA,1/numSims);
             outB=op_ampScale(outB,1/numSims);
             outC=op_ampScale(outC,1/numSims);
@@ -409,7 +419,7 @@ for ii = 1:length(MRS_opt)
         case 'MEGA'
             outA=op_ampScale(outA,1/voxRatio);
             outB=op_ampScale(outB,1/voxRatio);
-        case {'HERMES', 'HERCULES'}
+        case {'HERMES', 'HERCULES', 'HERMES_GABA_GSH_EtOH'}
             outA=op_ampScale(outA,1/voxRatio);
             outB=op_ampScale(outB,1/voxRatio);
             outC=op_ampScale(outC,1/voxRatio);
@@ -430,7 +440,7 @@ for ii = 1:length(MRS_opt)
         case 'MEGA'
             outA = op_dccorr_FID_A(outA,'p');
             outB = op_dccorr_FID_A(outB,'p');
-        case {'HERMES', 'HERCULES'}
+        case {'HERMES', 'HERCULES', 'HERMES_GABA_GSH_EtOH'}
             outA = op_dccorr_FID_A(outA,'p');
             outB = op_dccorr_FID_A(outB,'p');
             outC = op_dccorr_FID_A(outC,'p');
@@ -474,7 +484,7 @@ for ii = 1:length(MRS_opt)
             outB.name=metabolite;
             %save(out_name,'outA','outB');
             save(fullfile(save_dir,out_name),'outA','outB');
-        case {'HERMES', 'HERCULES'}
+        case {'HERMES', 'HERCULES', 'HERMES_GABA_GSH_EtOH'}
             outA.name=metabolite;
             outB.name=metabolite;
             outC.name=metabolite;

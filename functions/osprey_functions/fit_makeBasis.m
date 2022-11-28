@@ -268,7 +268,8 @@ if strcmp(sequence, 'MEGA')||strcmp(sequence, 'Edited_se_MRSI')
         case 'PE398'
             range_Ins = [3.8 4.1];
             pts_Ins = BASIS.ppm >= range_Ins(1) & BASIS.ppm <= range_Ins(end);
-            idx_Ins = find(strcmp(buffer.name,'Ins'));
+            %idx_Ins = find(strcmp(buffer.name,'Ins'));
+            idx_Ins = find(strcmp(buffer.name,'mI'));
             maxA = max(real(buffer.specs(pts_Ins,idx_Ins,1)));
             maxB = max(real(buffer.specs(pts_Ins,idx_Ins,2)));
             if maxA/maxB < 0.1
@@ -406,7 +407,7 @@ if strcmp(sequence, 'MEGA')||strcmp(sequence, 'Edited_se_MRSI')
         end % ~addMMFlag
     end
     
-elseif strcmp(sequence, 'HERMES') || strcmp(sequence, 'HERCULES')
+elseif strcmp(sequence, 'HERMES') || strcmp(sequence, 'HERCULES') || strcmp(sequence, 'HERMES_GABA_GSH_EtOH')
     % Determine maximum signal intensities for water and NAA in each
     % sub-spectrum.
     range_NAA = [1.9 2.1];
@@ -475,21 +476,31 @@ elseif strcmp(sequence, 'HERMES') || strcmp(sequence, 'HERCULES')
                 buffer.specs(:,rr,5)     = MM09.specs;
                 buffer.fids(:,rr,6)      = buffer.fids(:,rr,3) + buffer.fids(:,rr,4) - buffer.fids(:,rr,1) - buffer.fids(:,rr,2); % DIFF2 (GSH)
                 buffer.specs(:,rr,6)     = buffer.specs(:,rr,3) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,2);
+                buffer.fids(:,rr,8)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,3) - buffer.fids(:,rr,1) - buffer.fids(:,rr,4); % DIFF3 (EtOH) % SCNH
+                buffer.specs(:,rr,8)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,3) - buffer.specs(:,rr,1) - buffer.specs(:,rr,4);  % SCNH         
             elseif strcmp(buffer.name{rr}, 'MM14')
                 buffer.fids(:,rr,5)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,4) - buffer.fids(:,rr,1) - buffer.fids(:,rr,3); % DIFF1 (GABA)
                 buffer.specs(:,rr,5)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,3);
                 buffer.fids(:,rr,6)      = MM14.fids; % DIFF2 (GSH)
                 buffer.specs(:,rr,6)     = MM14.specs;
+                buffer.fids(:,rr,8)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,3) - buffer.fids(:,rr,1) - buffer.fids(:,rr,4); % DIFF3 (EtOH) % SCNH
+                buffer.specs(:,rr,8)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,3) - buffer.specs(:,rr,1) - buffer.specs(:,rr,4);  % SCNH       
+
             elseif strcmp(buffer.name{rr}, 'MM12')
                 buffer.fids(:,rr,5)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,4) - buffer.fids(:,rr,1) - buffer.fids(:,rr,3); % DIFF1 (GABA)
                 buffer.specs(:,rr,5)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,3);
                 buffer.fids(:,rr,6)      = MM12.fids; % DIFF2 (GSH)
                 buffer.specs(:,rr,6)     = MM12.specs;
+                buffer.fids(:,rr,8)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,3) - buffer.fids(:,rr,1) - buffer.fids(:,rr,4); % DIFF3 (EtOH) % SCNH
+                buffer.specs(:,rr,8)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,3) - buffer.specs(:,rr,1) - buffer.specs(:,rr,4);  % SCNH       
+
             else % uncomment, Feb 14, 2022 scnh
                 buffer.fids(:,rr,5)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,4) - buffer.fids(:,rr,1) - buffer.fids(:,rr,3); % DIFF1 (GABA)
                 buffer.specs(:,rr,5)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,3);
                 buffer.fids(:,rr,6)      = buffer.fids(:,rr,3) + buffer.fids(:,rr,4) - buffer.fids(:,rr,1) - buffer.fids(:,rr,2); % DIFF2 (GSH)
                 buffer.specs(:,rr,6)     = buffer.specs(:,rr,3) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,2);
+                buffer.fids(:,rr,8)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,3) - buffer.fids(:,rr,1) - buffer.fids(:,rr,4); % DIFF3 (EtOH) % SCNH
+                buffer.specs(:,rr,8)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,3) - buffer.specs(:,rr,1) - buffer.specs(:,rr,4);  % SCNH       
             end
             buffer.fids(:,rr,7)      = buffer.fids(:,rr,1) + buffer.fids(:,rr,3) + buffer.fids(:,rr,2) + buffer.fids(:,rr,4); % SUM
             buffer.specs(:,rr,7)     = buffer.specs(:,rr,1) + buffer.specs(:,rr,3) + buffer.specs(:,rr,2) + buffer.specs(:,rr,4);
@@ -501,6 +512,8 @@ elseif strcmp(sequence, 'HERMES') || strcmp(sequence, 'HERCULES')
             buffer.specs(:,rr,6)     = buffer.specs(:,rr,3) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,2);
             buffer.fids(:,rr,7)      = buffer.fids(:,rr,1) + buffer.fids(:,rr,3) + buffer.fids(:,rr,2) + buffer.fids(:,rr,4); % SUM
             buffer.specs(:,rr,7)     = buffer.specs(:,rr,1) + buffer.specs(:,rr,3) + buffer.specs(:,rr,2) + buffer.specs(:,rr,4);
+            buffer.fids(:,rr,8)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,3) - buffer.fids(:,rr,1) - buffer.fids(:,rr,4); % DIFF3 (EtOH) % SCNH
+            buffer.specs(:,rr,8)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,3) - buffer.specs(:,rr,1) - buffer.specs(:,rr,4);      % SCNH   
         end
     end
 

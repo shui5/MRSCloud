@@ -1,10 +1,9 @@
 function basis = run_simulations_cloud(json_input)
 
 % Default list
-% "metablist": ["Ala","Asc","Asp","Cit","Cr","CrCH2","EA","EtOH","GABA","GPC","GSH","Gln","Glu","Gly","H2O","mI","Lac","NAA","NAAG","PCh","PCr","PE","Phenyl","sI","Ser","Tau","Tyros","bHB"],
-
+% "metablist": ["Ala","Asc"","Asp","Cit","Cr","CrCH2","EA","EtOH","GABA","GPC","GSH","Gln","Glu","Gly","H2O","Lac","mI","NAA","NAAG","PCh","PCr","PE","Phenyl","Ser","sI","Tau","Thr","Tyros","Val","bHB"],
 % Additional metabolitse as per request.
-% "metablist": ["2HG","Cystat","HCar","Lys","Thr","Val","Ace","AcAc"]
+% "metab_default": ["Ace","AcO","AcAc","Cystat","HCar","Lys","bHG"],
 
 tic
 json_input      = '/Users/steve/Documents/My_Studies/MRSCloud/simMRS.json';
@@ -71,9 +70,16 @@ for iii = 1:length(metablist)
             MRS_temp.editON        = num2cell([A B]);
         case 'HERMES'
             TE                     = 80;
-            A                      = 4.56;          %single-lobe pulse
+            A                      = 4.68;          %single-lobe pulse
             B                      = 1.90;          %single-lobe pulse
-            C                      = (4.56+1.9)/2;  %dual-lobe pulse
+            C                      = (4.68+1.9)/2;  %dual-lobe pulse
+            D                      = 7.50;          %single-lobe pulse
+            MRS_temp.editON        = num2cell([A B C D]);
+        case 'HERMES_GABA_GSH_EtOH'
+            TE                     = 80;
+            A                      = (4.56+1.9)/2;  %dual-lobe pulse
+            B                      = (3.67+1.9)/2;  %dual-lobe pulse
+            C                      = (3.67+4.56)/2;  %dual-lobe pulse
             D                      = 7.50;          %single-lobe pulse
             MRS_temp.editON        = num2cell([A B C D]);
         case 'HERCULES'
@@ -107,7 +113,7 @@ for iii = 1:length(metablist)
     %Simulate
     switch(localization{1})
         case 'PRESS'
-            if strcmp(mega_or_hadam, 'HERMES') || strcmp(mega_or_hadam, 'HERCULES')
+            if strcmp(mega_or_hadam, 'HERMES') || strcmp(mega_or_hadam, 'HERCULES') || strcmp(mega_or_hadam, 'HERMES_GABA_GSH_EtOH')
                 [MRS_opt,outA, outB, outC, outD]  = sim_signals(MRS_opt);
             elseif strcmp(mega_or_hadam, 'MEGA')
                 [MRS_opt,outA, outB]              = sim_signals(MRS_opt);
@@ -119,7 +125,7 @@ for iii = 1:length(metablist)
                 [MRS_opt,outA]                    = sim_signals(MRS_opt);
             end
         case 'sLASER'
-            if strcmp(mega_or_hadam, 'HERMES') || strcmp(mega_or_hadam, 'HERCULES')
+            if strcmp(mega_or_hadam, 'HERMES') || strcmp(mega_or_hadam, 'HERCULES')|| strcmp(mega_or_hadam, 'HERMES_GABA_GSH_EtOH')
                 switch(vendor{1})
                     case 'GE'
                         [MRS_opt,outA, outB, outC, outD]  = sim_signals_GE_sLASER_HERMES(MRS_opt); %This function saves mat files for each sub-spectra simuation
@@ -166,6 +172,9 @@ switch sequence
     case 'HERMES'
         subspec = [1 2 3 4 5 6 7];
         subspecName = {'a','b','c','d','diff1','diff2','sum'};
+    case 'HERMES_GABA_GSH_EtOH'
+        subspec = [1 2 3 4 5 6 7 8];
+        subspecName = {'a','b','c','d','diff1','diff2','sum','diff3'}; %diff3 is EtOH
     case 'HERCULES'
         subspec = [1 2 3 4 5 6 7];
         subspecName = {'a','b','c','d','diff1','diff2','sum'};

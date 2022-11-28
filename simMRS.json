@@ -1,18 +1,19 @@
 {
     "userInput": {
-        "metablist": ["GABA"],
-        "vendor": ["Philips"], 
-        "mega_or_hadam": ["HERCULES"],
+        "metablist": ["Ala","Asc","Asp","Cit","EA","EtOH","GABA","GPC","GSH","Gln","Glu","Gly","Lac","mI","NAA","NAAG","PCh","PCr","PE","Phenyl","Ser","sI","Tau","Thr","Tyros","Val","bHB"],
+        "vendor": ["Siemens"], 
+        "mega_or_hadam": ["MEGA"],
         "localization": ["PRESS"],
         "editTarget": ["GABA"],
-      	"TE": 80,
+      	"TE": 68,
       	"editOn": 1.9,
       	"editOff": 7.5,
         "editTp": 20,
-        "spatial_points": 21
+        "spatial_points": 41,
+        "tm": 30
     },
     "private": {
-        "metab_default": ["Cr","NAA","H2O"],
+        "metab_default": ["Cr","NAA","H2O","CrCH2"],
         "flipAngle": 180,
         "centreFreq": 3.0,
         "edit_flipAngle": 180,

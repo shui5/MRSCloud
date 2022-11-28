@@ -63,6 +63,11 @@ switch(vendor{1})
                 editWaveform2       = 'sg100_100_0_14ms_88hz.pta';  % name of 2nd single editing pulse waveform. [1.9ppm]
                 editWaveform3       = 'dl_Philips_4_56_1_90.pta';   % name of 1st dual editing pulse waveform. [4.56ppm 1.90ppm]
                 editWaveform4       = 'sg100_100_0_14ms_88hz.pta';  % name of non-editing pulse waveform. [non-editing]
+            elseif strcmp(MRS_opt.seq, 'HERMES_GABA_GSH_EtOH')
+                editWaveform1       = 'dl_Philips_4_56_1_90.pta';
+                editWaveform2       = 'dl_Philips_3_67_1_90_20ms.pta';
+                editWaveform3       = 'dl_Philips_3_67_4_56_20ms.pta';
+                editWaveform4       = 'sg100_100_0_14ms_88hz.pta';
             else                                                    % MEGA PRESS
                 editWaveform1       = 'sg100_100_0_14ms_88hz.pta';  % name of 1st single editing pulse waveform. [1.9ppm]
                 editWaveform2       = 'sg100_100_0_14ms_88hz.pta';  % name of 1st single editing pulse waveform. [7.5ppm]
@@ -91,6 +96,11 @@ switch(vendor{1})
                 editWaveform2       = 'Siemens_filtered_editing.pta';  % name of 2nd single editing pulse waveform. [1.90ppm]
                 editWaveform3       = 'dl_Siemens_4_56_1_90.pta';      % name of 1st dual editing pulse waveform. [4.56ppm 1.90ppm]
                 editWaveform4       = 'Siemens_filtered_editing.pta';  % name of non-editing pulse waveform. [non-editing]
+            elseif strcmp(MRS_opt.seq, 'HERMES_GABA_GSH_EtOH')
+                editWaveform1       = 'dl_Siemens_4_56_1_90.pta';
+                editWaveform2       = 'dl_Siemens_3_67_1_90_20ms.pta';
+                editWaveform3       = 'dl_Siemens_3_67_4_56_20ms.pta'; 
+                editWaveform4       = 'Siemens_filtered_editing.pta';
             else % MEGA PRESS
                 editWaveform1       = 'Siemens_filtered_editing.pta';  % name of 1st single editing pulse waveform. [1.9ppm]
                 editWaveform2       = 'Siemens_filtered_editing.pta';  % name of 1st single editing pulse waveform. [7.5ppm]
@@ -115,6 +125,11 @@ switch(vendor{1})
                 editWaveform2       = 'sg100_100_0_14ms_88hz.pta';  % name of 2nd single editing pulse waveform. [1.9ppm]
                 editWaveform3       = 'dl_Philips_4_56_1_90.pta';   % name of 1st dual editing pulse waveform. [4.56ppm 1.90ppm]
                 editWaveform4       = 'sg100_100_0_14ms_88hz.pta';  % name of non-editing pulse waveform. [non-editing]
+            elseif strcmp(MRS_opt.seq, 'HERMES_GABA_GSH_EtOH')
+                editWaveform1       = 'dl_Philips_4_56_1_90.pta';
+                editWaveform2       = 'dl_Philips_3_67_1_90_20ms.pta';
+                editWaveform3       = 'dl_Philips_3_67_4_56_20ms.pta';
+                editWaveform4       = 'sg100_100_0_14ms_88hz.pta';
             else                                                    % MEGA PRESS
                 editWaveform1       = 'sg100_100_0_14ms_88hz.pta';  % name of 1st single editing pulse waveform. [1.9ppm]
                 editWaveform2       = 'sg100_100_0_14ms_88hz.pta';  % name of 1st single editing pulse waveform. [7.5ppm]
@@ -361,6 +376,19 @@ elseif strcmp(MRS_opt.seq, 'HERMES')
     MRS_opt.editRF2     = editRF2;
     MRS_opt.editRF3     = editRF3;
     MRS_opt.editRF4     = editRF4;
+elseif strcmp(MRS_opt.seq, 'HERMES_GABA_GSH_EtOH')
+    editRF1             = io_loadRFwaveform(editWaveform1,'inv',0);
+    editRF2             = io_loadRFwaveform(editWaveform2,'inv',0);
+    editRF3             = io_loadRFwaveform(editWaveform3,'inv',0);
+    editRF4             = io_loadRFwaveform(editWaveform4,'inv',0);
+    editRF1.tw1         = 1.8115; %editRF4.tw1*2;
+    editRF2.tw1         = 1.8354;
+    editRF3.tw1         = 1.9165;
+    editRF4.tw1         = editRF4.tw1;
+    MRS_opt.editRF1     = editRF1;
+    MRS_opt.editRF2     = editRF2;
+    MRS_opt.editRF3     = editRF3;
+    MRS_opt.editRF4     = editRF4;
 elseif strcmp(MRS_opt.seq, 'MEGA') ||strcmp(MRS_opt.seq, 'Edited_se_MRSI') 
     editRF1             = io_loadRFwaveform(editWaveform1,'inv',0);
     editRF2             = io_loadRFwaveform(editWaveform2,'inv',0);
@@ -409,11 +437,11 @@ if ~strcmp(MRS_opt.seq, 'UnEdited_se_MRSI')
 taus           = [TE1/2];               %middle 2nd EDITING to the start of readout
 %taus                = tausA;
 delays         = zeros(size(taus));
-delays(1)      = taus(1)-(refTp/2);
-delays(2)      = 0; %taus(2)-((refTp+editTp)/2);
-delays(3)      = 0; %taus(3)-((editTp+refTp)/2);
-delays(4)      = 0; %taus(4)-((refTp+editTp)/2);
-delays(5)      = 0; %taus(5)-(editTp/2);
+%delays(1)      = taus(1)-(refTp/2);
+%delays(2)      = 0; %taus(2)-((refTp+editTp)/2);
+%delays(3)      = 0; %taus(3)-((editTp+refTp)/2);
+%delays(4)      = 0; %taus(4)-((refTp+editTp)/2);
+%delays(5)      = 0; %taus(5)-(editTp/2);
 
 MRS_opt.taus   = taus;
 MRS_opt.delays = delays;
@@ -448,7 +476,7 @@ if strcmp(MRS_opt.seq, 'UnEdited_se_MRSI')||strcmp(MRS_opt.seq, 'Edited_se_MRSI'
     MRS_opt.Qexc = Qexc;
 end
 
-if strcmp(MRS_opt.seq, 'PRESS')||strcmp(MRS_opt.seq, 'sLASER')
+if strcmp(MRS_opt.seq, 'UnEdited')||strcmp(MRS_opt.seq, 'MEGA')||strcmp(MRS_opt.seq, 'HERMES')||strcmp(MRS_opt.seq, 'HERCULES')||strcmp(MRS_opt.seq, 'HERMES_GABA_GSH_EtOH')
     parfor X=1:length(MRS_opt.x)  %Use this if you do have the MATLAB parallel processing toolbox
         [Qrefoc{X}]  = calc_shapedRF_propagator_refoc(MRS_opt.H,MRS_opt.refRF,MRS_opt.refTp,MRS_opt.flipAngle,    0,MRS_opt.y(X),MRS_opt.Gx);
     end

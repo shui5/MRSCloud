@@ -5,7 +5,7 @@ MRSCloud is a cloud-based MATLAB executable for performing metabolites simulatio
 Source code is published on Github https://github.com/shui5/MRSCloud
 
 Features:
-MRSCloud supports simulations for up to 34 metabolites (26 commonly seen brain metabolites and 8 other metabolites for specific interests (see following list for details). Metabolites with complex J coupling spin system including (Cystat, HCar and Lys) may significantly increase simulation time.
+MRSCloud supports simulations for up to 35 metabolites (29 commonly seen brain metabolites and 6 other metabolites for specific interests (see following list for details). Metabolites with complex J coupling spin system including (Cystat, HCar and Lys) may significantly increase simulation time.
 
 1.  Alanine(Ala)
 2.  Ascorbic Acid(Asc)

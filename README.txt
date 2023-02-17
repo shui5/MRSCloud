@@ -5,7 +5,7 @@ MRSCloud is a cloud-based MATLAB executable for performing metabolites simulatio
 Source code is published on Github https://github.com/shui5/MRSCloud
 
 Features:
-MRSCloud supports simulations for up to 34 metabolites (26 commonly seen brain metabolites and 8 other metabolites for specific interests (see following list for details). Metabolites with complex J coupling spin system including (Cystat, HCar and Lys) may significantly increase simulation time.
+MRSCloud supports simulations for up to 35 metabolites (29 commonly seen brain metabolites and 6 other metabolites for specific interests (see following list for details). Metabolites with complex J coupling spin system including (Cystat, HCar and Lys) may significantly increase simulation time.
 
 1.  Alanine(Ala)
 2.  Ascorbic Acid(Asc)
@@ -20,33 +20,35 @@ MRSCloud supports simulations for up to 34 metabolites (26 commonly seen brain m
 11. Glutamine(Gln)
 12. Glutamate(Glu)
 13. Glycine(Gly)
-14. myo‐Inositol(mI)
+14. Water(H2O)
 15. Lactate(Lac)
-16. N‐Acetyl Aspartate(NAA)
-17. N‐Acetyl Aspartyl Glutamate(NAAG)
-18. Choline‐containing Compounds(PCh)
-19. Phosphocreatine(PCr)
-20. Phosphorylethanolamine(PE)
-21. Phenylalanine(Phenyl)
-22. scyllo‐Inositol(sI)
-23. Serine(Ser)
-24. Taurine(Tau)
-25. Tyrosine(Tyros)
-26. β‐Hydoxybutyrate(bHB)
+16. myo‐Inositol(mI)
+17. N‐Acetyl Aspartate(NAA)
+18. N‐Acetyl Aspartyl Glutamate(NAAG)
+19. Choline‐containing Compounds(PCh)
+20. Phosphocreatine(PCr)
+21. Phosphorylethanolamine(PE)
+22. Phenylalanine(Phenyl)
+23. scyllo‐Inositol(sI)
+24. Serine(Ser)
+25. Taurine(Tau)
+26. Threonine(Thr)
+27. Tyrosine(Tyros)
+28. Valine(Val)
+29. β‐Hydoxybutyrate(bHB)
 
 % Additional metabolites that are not common in normal brain.
 
-27. 2‐Hydroxyglutarate(2HG)
-28. Cystathionine(Cystat)
-39. Homocarnosine(HCar)
-30. Lysine(Lys)
-31. Threonine(Thr)
-32. Valine(Val)
-33. Acetate(Ace)
-34. Acetoacetate(AcAc)
+30. Acetate(AcO)
+31. Acetone(Ace)
+32. Acetoacetate(AcAc)
+33. Cystathionine(Cystat)
+34. Homocarnosine(HCar)
+35. Lysine(Lys)
+36. 2‐Hydroxyglutarate(2HG)
 
 Usage:
-Visit https://braingps.mricloud.org/mrs-cloud
+Visit https://braingps.mricloud.org/mrs-cloud 
 1.  On the user interface, select metabolites that are interested to be included in the basis set.
 2.  Select localization method (PRESS/sLASER).
 3.  Select vendor (GE/Philips/GE/Universal_Philips/Universal_Siemens).
@@ -74,4 +76,5 @@ Hui SCN, Saleh MG, Zöllner HJ, Oeltzschner G, Fan H, Li Y, Song Y, Jiang H, Nea
 Simpson R, Devenyi GA, Jezzard P, Hennessy TJ, Near J. Advanced processing and simulation of MRS data using the FID appliance (FID-A)-An open source, MATLAB-based toolkit. Magn Reson Med. 2017 Jan;77(1):23-33. doi: 10.1002/mrm.26091. Epub 2015 Dec 30. PMID: 26715192.
 
 Acknowledgements
-This work has been supported by NIH grants K99 DA051315, P41 EB031771, R00 AG062230,R01 EB016089, R01 EB023963, R21AG060245
+This work has been supported by NIH grants K99 DA051315, P41 EB031771, R00 AG062230,
+R01 EB016089, R01 EB023963, R21AG060245

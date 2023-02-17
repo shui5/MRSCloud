@@ -4,6 +4,7 @@ function basis = run_simulations_cloud(json_input)
 % "metablist": ["Ala","Asc"","Asp","Cit","Cr","CrCH2","EA","EtOH","GABA","GPC","GSH","Gln","Glu","Gly","H2O","Lac","mI","NAA","NAAG","PCh","PCr","PE","Phenyl","Ser","sI","Tau","Thr","Tyros","Val","bHB"],
 % Additional metabolitse as per request.
 % "metab_default": ["Ace","AcO","AcAc","Cystat","HCar","Lys","bHG"],
+% "metablist": ["PB4","Gua","ILc","Mann","MSM","Pgc","Pyr","Suc","Tryp"],
 
 tic
 json_input      = '/Users/steve/Documents/My_Studies/MRSCloud/simMRS.json';
@@ -20,7 +21,7 @@ editOn          = sim_paras_json.userInput.editOn;          % For MEGA only, HER
 editOff         = sim_paras_json.userInput.editOff;         % For MEGA only, HERMES and HERCULES are internally fixed
 editTp          = sim_paras_json.userInput.editTp;          % For MEGA only, HERMES and HERCULES are internally fixed
 spatial_points  = sim_paras_json.userInput.spatial_points;  % Number of spatial points to simulate
-tm              = sim_paras_json.userInput.tm;
+%tm              = sim_paras_json.userInput.tm;
 
 % if strcmp(mega_or_hadam, 'HERMES') || strcmp(mega_or_hadam, 'HERCULES')
 %     metablist       = horzcat(metab_default,metab_default_2,sim_paras_json.userInput.metablist);
@@ -70,9 +71,9 @@ for iii = 1:length(metablist)
             MRS_temp.editON        = num2cell([A B]);
         case 'HERMES'
             TE                     = 80;
-            A                      = 4.68;          %single-lobe pulse
+            A                      = 4.56;          %single-lobe pulse
             B                      = 1.90;          %single-lobe pulse
-            C                      = (4.68+1.9)/2;  %dual-lobe pulse
+            C                      = (4.56+1.9)/2;  %dual-lobe pulse
             D                      = 7.50;          %single-lobe pulse
             MRS_temp.editON        = num2cell([A B C D]);
         case 'HERMES_GABA_GSH_EtOH'
@@ -105,7 +106,7 @@ for iii = 1:length(metablist)
     MRS_temp.metab                 = metab{Nmetab}; %{ii};
     MRS_temp.Nmetab                = Nmetab; %ii;
     MRS_temp.TEs                   = num2cell(TE);
-    MRS_temp.tm                    = tm; % mixing time [ms]
+    %MRS_temp.tm                    = tm; % mixing time [ms]
     MRS_temp.save_dir              = save_dir; % scnh
     MRS_temp                       = load_parameters(MRS_temp); % This is the function you need to edit to change the simulation parameters (not specified above this line)
     MRS_opt                        = MRS_temp; % Creating a struct variable with dimens >=1;

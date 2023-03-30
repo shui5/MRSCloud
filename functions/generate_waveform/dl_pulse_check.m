@@ -5,6 +5,7 @@ clear all
 addpath('/Users/muhammad/Documents/PostDoc_Hopkins/Work/Projects/HERMES_HERCULES/HERCULES/HERC_Optimization/Simulation/Function/')
 addpath('/Users/muhammad/Documents/PostDoc_Hopkins/Work/Projects/HERMES_HERCULES/HERCULES/HERC_Optimization/Simulation/Function/edited_PRESS_sim/Experim_funct')
 addpath('/Users/muhammad/Documents/PostDoc_Hopkins/Work/Projects/HERMES_HERCULES/HERCULES/HERC_Optimization/Simulation/pulses')
+addpath(genpath('/Users/steve/Documents/MATLAB/HERC_Optimization'))
 
 %Create a struct variable with the pulse parameters
 load('B1_freq_2hz_optimizer')

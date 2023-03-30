@@ -1,7 +1,9 @@
 function basis = run_simulations_cloud(json_input)
 
 % Default list
-% "metablist": ["Ala","Asc"","Asp","Cit","Cr","CrCH2","EA","EtOH","GABA","GPC","GSH","Gln","Glu","Gly","H2O","Lac","mI","NAA","NAAG","PCh","PCr","PE","Phenyl","Ser","sI","Tau","Thr","Tyros","Val","bHB"],
+% "metablist": ["Ala","Asc","Asp","Cit","Cr","CrCH2","EA","EtOH","GABA","GPC","GSH","Gln","Glu","Gly","H2O","Lac","mI","NAA","NAAG","PCh","PCr","PE","Phenyl","Ser","sI","Tau","Thr","Tyros","Val","bHB"],
+% Health brain 
+% "metablist": ["Asc","Asp","Cr","CrCH2","GABA","GPC","GSH","Gln","Glu","Gly","H2O","Lac","mI","NAA","NAAG","PCh","PCr","PE","Phenyl","Ser","sI","Tau"],
 % Additional metabolitse as per request.
 % "metab_default": ["Ace","AcO","AcAc","Cystat","HCar","Lys","bHG"],
 % "metablist": ["PB4","Gua","ILc","Mann","MSM","Pgc","Pyr","Suc","Tryp"],
@@ -158,7 +160,7 @@ sequence        = mega_or_hadam{1,1};
 localization    = localization{1,1};
 editTarget      = sim_paras_json.userInput.editTarget{1:1};
 
-[basis]         = fit_makeBasis(save_dir, addMMFlag, sequence, editTarget, TE, localization, vendor);
+[basis]         = fit_makeBasis_MRSCloud(save_dir, addMMFlag, sequence, editTarget, TE, localization, vendor);
 basis.vendor    = sim_paras_json.userInput.vendor;
 basis.seq       = sim_paras_json.userInput.mega_or_hadam;
 basis.localization = sim_paras_json.userInput.localization;
@@ -200,7 +202,7 @@ end
 % create a basis set in .mat for Osprey
 addMMFlag       = 1;
 delete([save_dir,'/BASIS_*']); % Remove the previous BASIS with MMFlag off
-[basis]         = fit_makeBasis(save_dir, addMMFlag, sequence, editTarget, TE, localization, vendor);
+[basis]         = fit_makeBasis_MRSCloud(save_dir, addMMFlag, sequence, editTarget, TE, localization, vendor);
 
 % zip outputfile
 zipname = outputFile;

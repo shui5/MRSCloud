@@ -1,15 +1,15 @@
 {
     "userInput": {
-        "metablist": ["Ala","Asc","Asp","Cit","EA","EtOH","GABA","GPC","GSH","Gln","Glu","Gly","Lac","mI","NAA","NAAG","PCh","PCr","PE","Phenyl","Ser","sI","Tau","Thr","Tyros","Val","bHB"],
+        "metablist": ["Asc","Asp","Cr","CrCH2","GABA","GPC","GSH","Gln","Glu","Gly","H2O","Lac","mI","NAA","NAAG","PCh","PCr","PE","Phenyl","Ser","sI","Tau"],
         "vendor": ["Siemens"], 
-        "mega_or_hadam": ["MEGA"],
+        "mega_or_hadam": ["HERCULES"],
         "localization": ["PRESS"],
         "editTarget": ["GABA"],
       	"TE": 68,
       	"editOn": 1.9,
       	"editOff": 7.5,
         "editTp": 20,
-        "spatial_points": 41,
+        "spatial_points": 101,
         "tm": 30
     },
     "private": {

@@ -476,31 +476,37 @@ elseif strcmp(sequence, 'HERMES') || strcmp(sequence, 'HERCULES') || strcmp(sequ
                 buffer.specs(:,rr,5)     = MM09.specs;
                 buffer.fids(:,rr,6)      = buffer.fids(:,rr,3) + buffer.fids(:,rr,4) - buffer.fids(:,rr,1) - buffer.fids(:,rr,2); % DIFF2 (GSH)
                 buffer.specs(:,rr,6)     = buffer.specs(:,rr,3) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,2);
-                buffer.fids(:,rr,8)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,3) - buffer.fids(:,rr,1) - buffer.fids(:,rr,4); % DIFF3 (EtOH) % SCNH
-                buffer.specs(:,rr,8)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,3) - buffer.specs(:,rr,1) - buffer.specs(:,rr,4);  % SCNH         
+                if strcmp(sequence, 'HERMES_GABA_GSH_EtOH')
+                    buffer.fids(:,rr,8)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,3) - buffer.fids(:,rr,1) - buffer.fids(:,rr,4); % DIFF3 (EtOH) % SCNH
+                    buffer.specs(:,rr,8)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,3) - buffer.specs(:,rr,1) - buffer.specs(:,rr,4);  % SCNH
+                end
             elseif strcmp(buffer.name{rr}, 'MM14')
                 buffer.fids(:,rr,5)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,4) - buffer.fids(:,rr,1) - buffer.fids(:,rr,3); % DIFF1 (GABA)
                 buffer.specs(:,rr,5)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,3);
                 buffer.fids(:,rr,6)      = MM14.fids; % DIFF2 (GSH)
                 buffer.specs(:,rr,6)     = MM14.specs;
-                buffer.fids(:,rr,8)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,3) - buffer.fids(:,rr,1) - buffer.fids(:,rr,4); % DIFF3 (EtOH) % SCNH
-                buffer.specs(:,rr,8)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,3) - buffer.specs(:,rr,1) - buffer.specs(:,rr,4);  % SCNH       
-
+                if strcmp(sequence, 'HERMES_GABA_GSH_EtOH')
+                    buffer.fids(:,rr,8)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,3) - buffer.fids(:,rr,1) - buffer.fids(:,rr,4); % DIFF3 (EtOH) % SCNH
+                    buffer.specs(:,rr,8)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,3) - buffer.specs(:,rr,1) - buffer.specs(:,rr,4);  % SCNH
+                end
             elseif strcmp(buffer.name{rr}, 'MM12')
                 buffer.fids(:,rr,5)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,4) - buffer.fids(:,rr,1) - buffer.fids(:,rr,3); % DIFF1 (GABA)
                 buffer.specs(:,rr,5)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,3);
                 buffer.fids(:,rr,6)      = MM12.fids; % DIFF2 (GSH)
                 buffer.specs(:,rr,6)     = MM12.specs;
-                buffer.fids(:,rr,8)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,3) - buffer.fids(:,rr,1) - buffer.fids(:,rr,4); % DIFF3 (EtOH) % SCNH
-                buffer.specs(:,rr,8)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,3) - buffer.specs(:,rr,1) - buffer.specs(:,rr,4);  % SCNH       
-
+                if strcmp(sequence, 'HERMES_GABA_GSH_EtOH')
+                    buffer.fids(:,rr,8)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,3) - buffer.fids(:,rr,1) - buffer.fids(:,rr,4); % DIFF3 (EtOH) % SCNH
+                    buffer.specs(:,rr,8)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,3) - buffer.specs(:,rr,1) - buffer.specs(:,rr,4);  % SCNH
+                end
             else % uncomment, Feb 14, 2022 scnh
                 buffer.fids(:,rr,5)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,4) - buffer.fids(:,rr,1) - buffer.fids(:,rr,3); % DIFF1 (GABA)
                 buffer.specs(:,rr,5)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,3);
                 buffer.fids(:,rr,6)      = buffer.fids(:,rr,3) + buffer.fids(:,rr,4) - buffer.fids(:,rr,1) - buffer.fids(:,rr,2); % DIFF2 (GSH)
                 buffer.specs(:,rr,6)     = buffer.specs(:,rr,3) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,2);
-                buffer.fids(:,rr,8)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,3) - buffer.fids(:,rr,1) - buffer.fids(:,rr,4); % DIFF3 (EtOH) % SCNH
-                buffer.specs(:,rr,8)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,3) - buffer.specs(:,rr,1) - buffer.specs(:,rr,4);  % SCNH       
+                if strcmp(sequence, 'HERMES_GABA_GSH_EtOH')
+                    buffer.fids(:,rr,8)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,3) - buffer.fids(:,rr,1) - buffer.fids(:,rr,4); % DIFF3 (EtOH) % SCNH
+                    buffer.specs(:,rr,8)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,3) - buffer.specs(:,rr,1) - buffer.specs(:,rr,4);  % SCNH
+                end
             end
             buffer.fids(:,rr,7)      = buffer.fids(:,rr,1) + buffer.fids(:,rr,3) + buffer.fids(:,rr,2) + buffer.fids(:,rr,4); % SUM
             buffer.specs(:,rr,7)     = buffer.specs(:,rr,1) + buffer.specs(:,rr,3) + buffer.specs(:,rr,2) + buffer.specs(:,rr,4);
@@ -512,8 +518,10 @@ elseif strcmp(sequence, 'HERMES') || strcmp(sequence, 'HERCULES') || strcmp(sequ
             buffer.specs(:,rr,6)     = buffer.specs(:,rr,3) + buffer.specs(:,rr,4) - buffer.specs(:,rr,1) - buffer.specs(:,rr,2);
             buffer.fids(:,rr,7)      = buffer.fids(:,rr,1) + buffer.fids(:,rr,3) + buffer.fids(:,rr,2) + buffer.fids(:,rr,4); % SUM
             buffer.specs(:,rr,7)     = buffer.specs(:,rr,1) + buffer.specs(:,rr,3) + buffer.specs(:,rr,2) + buffer.specs(:,rr,4);
-            buffer.fids(:,rr,8)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,3) - buffer.fids(:,rr,1) - buffer.fids(:,rr,4); % DIFF3 (EtOH) % SCNH
-            buffer.specs(:,rr,8)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,3) - buffer.specs(:,rr,1) - buffer.specs(:,rr,4);      % SCNH   
+            if strcmp(sequence, 'HERMES_GABA_GSH_EtOH')
+                buffer.fids(:,rr,8)      = buffer.fids(:,rr,2) + buffer.fids(:,rr,3) - buffer.fids(:,rr,1) - buffer.fids(:,rr,4); % DIFF3 (EtOH) % SCNH
+                buffer.specs(:,rr,8)     = buffer.specs(:,rr,2) + buffer.specs(:,rr,3) - buffer.specs(:,rr,1) - buffer.specs(:,rr,4);      % SCNH
+            end
         end
     end
 

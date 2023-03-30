@@ -154,6 +154,11 @@ switch(vendor{1})
                 editWaveform2       = 'sl_univ_pulse.pta';             % name of 1st single editing pulse waveform. [1.90ppm]
                 editWaveform3       = 'dl_Philips_univ_4_56_1_90.pta'; % name of 1st dual editing pulse waveform. [4.56ppm 1.90ppm]
                 editWaveform4       = 'sl_univ_pulse.pta';             % name of 1st single editing pulse waveform. [non-editing]
+             elseif strcmp(MRS_opt.seq, 'HERMES_GABA_GSH_EtOH')
+                editWaveform1       = 'dl_Philips_univ_4_56_1_9_20ms.pta';
+                editWaveform2       = 'dl_Philips_univ_3_67_1_9_20ms.pta';
+                editWaveform3       = 'dl_Philips_univ_3_67_4_56_20ms.pta';
+                editWaveform4       = 'sl_univ_pulse.pta';
             else                                                       % MEGA PRESS
                 editWaveform1       = 'sl_univ_pulse.pta';             % name of 1st single editing pulse waveform. [1.9ppm]
                 editWaveform2       = 'sl_univ_pulse.pta';             % name of 1st single editing pulse waveform. [7.5ppm]
@@ -173,11 +178,16 @@ switch(vendor{1})
                 editWaveform2       = 'sl_univ_pulse.pta';         % name of 1st single editing pulse waveform. [4.18ppm]
                 editWaveform3       = 'dl_Siemens_4_58_1_90.pta';  % name of 1st single editing pulse waveform. [4.58ppm 1.90ppm]
                 editWaveform4       = 'dl_Siemens_4_18_1_90.pta';  % name of 1st single editing pulse waveform. [4.18ppm 1.90ppm]
-            elseif strcmp(MRS_opt.seq, 'HERMES')
+            elseif strcmp(MRS_opt.seq, 'HERMES') 
                 editWaveform1       = 'sl_univ_pulse.pta';             % name of 1st single editing pulse waveform. [4.56ppm]
                 editWaveform2       = 'sl_univ_pulse.pta';             % name of 1st single editing pulse waveform. [1.90ppm]
                 editWaveform3       = 'dl_Siemens_4_56_1_90.pta'; % name of 1st dual editing pulse waveform. [4.56ppm 1.90ppm]
                 editWaveform4       = 'sl_univ_pulse.pta';             % name of 1st single editing pulse waveform. [non-editing]
+             elseif strcmp(MRS_opt.seq, 'HERMES_GABA_GSH_EtOH')
+                editWaveform1       = 'dl_Siemens_univ_4_56_1_9_20ms.pta';
+                editWaveform2       = 'dl_Siemens_univ_3_67_1_9_20ms.pta';
+                editWaveform3       = 'dl_Siemens_univ_3_67_4_56_20ms.pta';
+                editWaveform4       = 'sl_univ_pulse.pta';
             else                                                       % MEGA PRESS
                 editWaveform1       = 'sl_univ_pulse.pta';             % name of 1st single editing pulse waveform. [1.9ppm]
                 editWaveform2       = 'sl_univ_pulse.pta';             % name of 1st single editing pulse waveform. [7.5ppm]

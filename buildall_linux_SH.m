@@ -36,10 +36,11 @@
 %         waveform_folder  = '/Users/steve/Documents/My_Studies/MRSCloud/pulses';
 %         functions_folder = '/Users/steve/Documents/My_Studies/MRSCloud/functions';
 %         addpath(genpath('/Users/steve/Documents/My_Studies/MRSCloud'));
-        jsonlab_folder   = '/home/hfan/Documents/MATLAB/MRSCloud/functions/jsonlab-2.0/jsonlab-2.0';
-        waveform_folder  = '/home/hfan/Documents/MATLAB/MRSCloud/pulses';
-        functions_folder = '/home/hfan/Documents/MATLAB/MRSCloud/functions';
-        addpath(genpath('/home/hfan/Documents/MATLAB/MRSCloud/'));
+        jsonlab_folder   = '/Users/steve/Documents/My_Studies/MRSCloud/functions/jsonlab-2.0/jsonlab-2.0';
+        waveform_folder_1  = '/Users/steve/Documents/My_Studies/MRSCloud/pulses_universal';
+        waveform_folder_2  = '/Users/steve/Documents/My_Studies/MRSCloud/pulses_vendors';
+        functions_folder = '/Users/steve/Documents/My_Studies/MRSCloud/functions/';
+        addpath(genpath('/Users/steve/Documents/My_Studies/MRSCloud'));
         
         % artfolder = '/root/code/matlab/toolbox/art';
 %     otherwise
@@ -54,7 +55,7 @@ main_mfile = 'run_simulations_cloud.m';
 
 mcc ('-C', ...
      '-m', main_mfile, ...
-     '-a', jsonlab_folder, '-a', waveform_folder, '-a', functions_folder);
+     '-a', jsonlab_folder, '-a', waveform_folder_1, '-a', waveform_folder_2, '-a', functions_folder);
 
 % mcc -m io_loadRFwaveform.m -a RF_GOIA_20200506_100pts.mat -a am_sg_150_100.pta -a am_sg_150_100_200pts.pta -a am_sg_200_100.pta...
 %      -a am_sg_300_100.pta -a am_sg_400_150.pta -a am_sg_475_200.pta...

@@ -1,13 +1,11 @@
 function basis = run_simulations_cloud(json_input)
 
 % Default list
-% "metablist": ["Ala","Asc","Asp","Cit","Cr","CrCH2","EA","EtOH","GABA","GPC","GSH","Gln","Glu","Gly","H2O","Lac","mI","NAA","NAAG","PCh","PCr","PE","Phenyl","Ser","sI","Tau","Thr","Tyros","Val","bHB"],
-% Health brain 
-% "metablist": ["Asc","Asp","Cr","CrCH2","GABA","GPC","GSH","Gln","Glu","Gly","H2O","Lac","mI","NAA","NAAG","PCh","PCr","PE","Phenyl","Ser","sI","Tau"],
-% Additional metabolitse as per request.
-% "metab_default": ["Ace","AcO","AcAc","Cystat","HCar","Lys","bHG"],
-% "metablist": ["PB4","Gua","ILc","Mann","MSM","Pgc","Pyr","Suc","Tryp"],
+% "metablist": ["Asc","Asp","Cr","EA","GABA","GPC","GSH","Gln","Glu","Gly","H2O","Lac","mI","NAA","NAAG","PCh","PCr","PE","Ser","sI","Tau"],
+% "metablist": ["Ala","Ace","AcO","AcAc","Cit","Cystat","HCar","Lys","Thr","bHG","Tyros","Val","Phenyl","bHB","Gua","ILc","Pyr","Suc","Tryp"],
+% "metablist": ["EtOH","MSM"],
 
+% Check spin systems of Valine (Val), Ethanolamine (EA), Isoleucine (ILc), Lysine (Lys)
 tic
 json_input      = '/Users/steve/Documents/My_Studies/MRSCloud/simMRS.json';
 sim_paras_json  = loadjson(json_input);
@@ -24,10 +22,6 @@ editOff         = sim_paras_json.userInput.editOff;         % For MEGA only, HER
 editTp          = sim_paras_json.userInput.editTp;          % For MEGA only, HERMES and HERCULES are internally fixed
 spatial_points  = sim_paras_json.userInput.spatial_points;  % Number of spatial points to simulate
 %tm              = sim_paras_json.userInput.tm;
-
-% if strcmp(mega_or_hadam, 'HERMES') || strcmp(mega_or_hadam, 'HERCULES')
-%     metablist       = horzcat(metab_default,metab_default_2,sim_paras_json.userInput.metablist);
-% end
 
 flipAngle       = sim_paras_json.private.flipAngle;
 centreFreq      = sim_paras_json.private.centreFreq;

@@ -458,6 +458,7 @@ MRS_opt.delays = delays;
 end
 %Calculate Hamiltonian matrices and starting density matrix.
 [H,d]=sim_Hamiltonian_mgs(sys,Bfield);
+
 MRS_opt.H = H;
 MRS_opt.d = d;
 %Creating propagators for editing pulse

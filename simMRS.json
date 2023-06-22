@@ -1,6 +1,6 @@
 {
     "userInput": {
-        "metablist": ["ILc"],
+        "metablist": ["GABA","GSH"],
         "vendor": ["Philips"], 
         "mega_or_hadam": ["MEGA"],
         "localization": ["PRESS"],
@@ -9,7 +9,7 @@
       	"editOn": 1.9,
       	"editOff": 7.5,
         "editTp": 20,
-        "spatial_points": 3,
+        "spatial_points": 11,
         "tm": 30
     },
     "private": {

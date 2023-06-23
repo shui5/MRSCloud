@@ -1,9 +1,9 @@
 {
     "userInput": {
-        "metablist": ["GABA","GSH"],
+        "metablist": ["GABA","GSH","Lac"],
         "vendor": ["Siemens"], 
         "mega_or_hadam": ["UnEdited"],
-        "localization": ["sLASER"],
+        "localization": ["PRESS"],
         "editTarget": ["GABA"],
       	"TE": 68,
       	"editOn": 1.9,

@@ -163,6 +163,7 @@ switch sequence
     case 'UnEdited'
         subspec = 1;
         subspecName = {''};
+        editTarget = ''; % ARC 20230621
     case 'MEGA'
         subspec = [1 2 3 4];
         subspecName = {'off','on','diff1','sum'};
@@ -184,20 +185,23 @@ switch sequence
 end
 
 for ss = 1:length(subspec)
-    outfile   = [save_dir 'LCModel_' vendor '_' sequence '_' localization '_' editTarget '' num2str(TE) '_' subspecName{ss} '' '.BASIS'];
-    
-    % out_name_parts = { 'LCModel', vendor, sequence, localization, editTarget }; % ARC 20230621
-    % last_ix = find(strlength(out_name_parts)>0,1,'last'); % ARC 20230621
-    % out_name_parts{last_ix} = [ out_name_parts{last_ix} num2str(TE) ]; % ARC 20230621
-    % out_name_parts{end+1} = subspecName{ss}; % ARC 20230621
-    % outfile = fullfile(save_dir, [ strjoin(out_name_parts(strlength(out_name_parts)>0), '_') '.BASIS']); % ARC 20230621
+    %outfile   = [save_dir 'LCModel_' vendor '_' sequence '_' localization '_' editTarget '' num2str(TE) '_' subspecName{ss} '' '.BASIS'];
+    out_name_parts = { 'LCModel', vendor, sequence, localization, editTarget }; % ARC 20230621
+    last_ix = find(strlength(out_name_parts)>0,1,'last'); % ARC 20230621
+    out_name_parts{last_ix} = [ out_name_parts{last_ix} '_TE' num2str(TE) ]; % ARC 20230621
+    out_name_parts{end+1} = subspecName{ss}; % ARC 20230621
+    outfile = fullfile(save_dir, [ strjoin(out_name_parts(strlength(out_name_parts)>0), '_') '.BASIS']); % ARC 20230621
     % function strlength is not avaliable before MATLAB 2016
     
     RF        = io_writelcmBASIS(basis,outfile,vendor,sequence,metablist,subspec(ss));
     % generate plot of metabolite signal from basis set
     out = fit_plotBasis(basis, ss, 1);
     set(gcf, 'Color', 'w','renderer','painters');
-    saveas(out,fullfile(save_dir,['basis-set' '_' subspecName{ss},'.pdf']),'pdf');
+    if strcmp(mega_or_hadam, 'UnEdited')
+        saveas(out,fullfile(save_dir,['basis-set','.pdf']),'pdf');
+    else
+        saveas(out,fullfile(save_dir,['basis-set' '_' subspecName{ss},'.pdf']),'pdf');
+    end
     close;
 end
 

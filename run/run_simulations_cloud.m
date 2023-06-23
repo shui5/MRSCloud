@@ -192,6 +192,7 @@ for ss = 1:length(subspec)
     out_name_parts{end+1} = subspecName{ss};
 
     outfile = fullfile(save_dir, [ strjoin(out_name_parts(strlength(out_name_parts)>0), '_') '.BASIS']);
+
     RF        = io_writelcmBASIS(basis,outfile,vendor,sequence,metablist,subspec(ss));
     % generate plot of metabolite signal from basis set
     out = fit_plotBasis(basis, ss, 1);

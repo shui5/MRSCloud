@@ -1,15 +1,15 @@
 {
     "userInput": {
-        "metablist": ["ILc"],
-        "vendor": ["Philips"], 
-        "mega_or_hadam": ["MEGA"],
-        "localization": ["PRESS"],
+        "metablist": ["GABA","GSH"],
+        "vendor": ["Siemens"], 
+        "mega_or_hadam": ["UnEdited"],
+        "localization": ["sLASER"],
         "editTarget": ["GABA"],
       	"TE": 68,
       	"editOn": 1.9,
       	"editOff": 7.5,
         "editTp": 20,
-        "spatial_points": 3,
+        "spatial_points": 11,
         "tm": 30
     },
     "private": {

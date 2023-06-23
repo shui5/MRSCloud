@@ -563,12 +563,16 @@ BASIS.fids  = BASIS.fids ./ BASIS.scale;
 BASIS.specs = BASIS.specs ./ BASIS.scale;
 
 % Save as *.mat file
+
 %save(['BASIS' save_str '.mat'], 'BASIS');
 %save(['BASIS' '_' vendor '_' sequence '_' localization '_' editTarget ''
 %num2str(TE) '' save_str '.mat'], 'BASIS'); %scnh
 
 out_name_parts = { 'BASIS', vendor, sequence, localization, editTarget }; % ARC 20230621
 out_name = [ strjoin(out_name_parts(strlength(out_name_parts)>0), '_') num2str(TE) save_str '.mat'];
+
+% out_name = ['BASIS' '_' vendor '_' sequence '_' localization '_' editTarget '' num2str(TE) '' save_str '.mat']; %scnh
+% function strlength is not avaliable before MATLAB 2016
 
 save(fullfile(folder,out_name),'BASIS'); %scnh
 

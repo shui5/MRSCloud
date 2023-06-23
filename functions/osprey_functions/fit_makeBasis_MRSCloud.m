@@ -566,7 +566,7 @@ BASIS.specs = BASIS.specs ./ BASIS.scale;
 
 %out_name = ['BASIS' '_' vendor '_' sequence '_' localization '_' editTarget '' num2str(TE) '' save_str '.mat']; %scnh
 out_name_parts = { 'BASIS', vendor, sequence, localization, editTarget }; % ARC 20230621
-out_name = [ strjoin(out_name_parts(strlength(out_name_parts)>0), '_') '_TE' num2str(TE) save_str '.mat'];% ARC 20230621
+out_name = [ strjoin(out_name_parts(strlength(out_name_parts)>0), '_') '_TE' num2str(TE) save_str '.mat'];% ARC 20230621 % scnh added '_TE'
 % function strlength is not avaliable before MATLAB 2016
 save(fullfile(folder,out_name),'BASIS'); %scnh
 

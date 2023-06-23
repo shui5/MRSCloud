@@ -1,9 +1,9 @@
 {
     "userInput": {
         "metablist": ["GABA","GSH"],
-        "vendor": ["Philips"], 
-        "mega_or_hadam": ["MEGA"],
-        "localization": ["PRESS"],
+        "vendor": ["Siemens"], 
+        "mega_or_hadam": ["UnEdited"],
+        "localization": ["sLASER"],
         "editTarget": ["GABA"],
       	"TE": 68,
       	"editOn": 1.9,

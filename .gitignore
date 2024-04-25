@@ -1,6 +1,5 @@
 *.zip
-**/._*.m
-**/._*.pta
+._*
 manuscript
 misc
 pulses_vendors

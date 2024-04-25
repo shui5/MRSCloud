@@ -1,6 +1,7 @@
 function MRS_opt = load_parameters(MRS_opt)
 
 spinSys         = MRS_opt.metab;
+FieldStr        = MRS_opt.FieldStr;
 vendor          = MRS_opt.vendor;
 localization    = MRS_opt.localization;
 %metabolite      = MRS_opt.metab;
@@ -20,6 +21,10 @@ if strcmp(vendor, 'Siemens')||strcmp(vendor, 'Universal_Siemens')
     Bfield = 2.89;    % Siemens magnetic field strength [Tesla]
 else
     Bfield = 3.0;     % Philips magnetic field strength [Tesla]
+end
+
+if strcmp(FieldStr, '1.5T')
+    Bfield = 1.5;     % GE magnetic field strength [Tesla]
 end
 
 if strcmp(localization, 'STEAM_7T')

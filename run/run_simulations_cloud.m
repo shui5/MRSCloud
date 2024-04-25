@@ -2,16 +2,17 @@ function basis = run_simulations_cloud(json_input)
 
 % Default list
 % "metablist": ["Asc","Asp","Cr","EA","GABA","GPC","GSH","Gln","Glu","Gly","H2O","Lac","mI","NAA","NAAG","PCh","PCr","PE","Ser","sI","Tau"],
-% "metablist": ["Ala","Ace","AcO","AcAc","Cit","Cystat","HCar","Lys","Thr","bHG","Tyros","Val","Phenyl","bHB","Gua","ILc","Pyr","Suc","Tryp"],
+% "metablist": ["Ala","Ace","AcO","AcAc","Cit","Cystat","HCar","Lys","Thr","bHG","Tyros","Val","Phenyl","bHB","Gua","iLe","Pyr","Suc","Tryp"],
 % "metablist": ["EtOH","MSM"],
 
 % Check spin systems of Valine (Val), Ethanolamine (EA), Isoleucine (ILc), Lysine (Lys)
 tic
-json_input      = '/Users/steve/Documents/My_Studies/MRSCloud/simMRS.json';
+json_input      = 'C:\Users\SHUI\Documents\MATLAB\MRSCloud\simMRS.json';
 sim_paras_json  = loadjson(json_input);
 
 metab_default   = sim_paras_json.private.metab_default;
 metablist       = horzcat(metab_default,sim_paras_json.userInput.metablist);
+FieldStr        = sim_paras_json.userInput.FieldStr;          % Options: 1.5T/3T/7T
 vendor          = sim_paras_json.userInput.vendor;          % Options: GE/Philips/Siemens/Universal_Philips/Universal_Siemens
 mega_or_hadam   = sim_paras_json.userInput.mega_or_hadam;   % Options: UnEdited/MEGA/HERMES/HERCULES
 localization    = sim_paras_json.userInput.localization;    % Options: PRESS/sLASER
@@ -95,6 +96,7 @@ for iii = 1:length(metablist)
     MRS_temp.nY                    = spatial_points;   % number of spatial points to simulate in y direction
     MRS_temp.nZ                    = spatial_points;   % number of spatial points to simulate in z direction
     MRS_temp.localization          = localization;
+    MRS_temp.FieldStr              = FieldStr;
     MRS_temp.vendor                = vendor;
     MRS_temp.seq                   = mega_or_hadam;
     metab                          = metablist(iii);
@@ -104,7 +106,12 @@ for iii = 1:length(metablist)
     MRS_temp.TEs                   = num2cell(TE);
     %MRS_temp.tm                    = tm; % mixing time [ms]
     MRS_temp.save_dir              = save_dir; % scnh
-    MRS_temp                       = load_parameters(MRS_temp); % This is the function you need to edit to change the simulation parameters (not specified above this line)
+    
+    if strcmp(FieldStr, '1.5T')
+        MRS_temp                       = load_parameters_1_5T(MRS_temp); % This is the function you need to edit to change the simulation parameters (not specified above this line)
+    else
+        MRS_temp                       = load_parameters(MRS_temp); % This is the function you need to edit to change the simulation parameters (not specified above this line)
+    end
     MRS_opt                        = MRS_temp; % Creating a struct variable with dimens >=1;
     
     %Simulate

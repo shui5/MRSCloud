@@ -1,11 +1,12 @@
 {
     "userInput": {
-        "metablist": ["GABA","GSH","Lac"],
-        "vendor": ["Siemens"], 
+        "metablist": ["Ch","GABA","GPC","NAAG","PCh","PCr"],
+        "FieldStr": ["3T"],
+        "vendor": ["Philips"], 
         "mega_or_hadam": ["UnEdited"],
         "localization": ["PRESS"],
         "editTarget": ["GABA"],
-      	"TE": 68,
+      	"TE": 35,
       	"editOn": 1.9,
       	"editOff": 7.5,
         "editTp": 20,
@@ -20,8 +21,8 @@
         "excflipAngle": 90
     },
     "DIRECTORY":{
-        "save_dir": "/Users/steve/Documents/My_Studies/MRSCloud/save_dir/",
-        "work_dir": "/Users/steve/Documents/My_Studies/MRSCloud/",
-        "outputFile": "/Users/steve/Documents/My_Studies/MRSCloud/mrs_sim_out.zip"
+        "save_dir": "C:/Users/SHUI/Documents/MATLAB/MRSCloud/save_dir/",
+        "work_dir": "C:/Users/SHUI/Documents/MATLAB/MRSCloud",
+        "outputFile": "C:/Users/SHUI/Documents/MATLAB/MRSCloud/mrs_sim_out.zip"
     }
 }

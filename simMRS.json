@@ -1,6 +1,6 @@
 {
     "userInput": {
-        "metablist": ["Asc","Asp","Ch","EA","GABA","GPC","GSH","Gln","Glu","Gly","Lac","mI","NAAG","PCh","PCr","PE","Ser","sI","Tau"],
+        "metablist": ["Ch","GABA","Glu","Lac","mI","PCh","PCr"],
         "FieldStr": ["3T"],
         "vendor": ["Philips"], 
         "mega_or_hadam": ["UnEdited"],

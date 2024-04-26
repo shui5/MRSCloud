@@ -42,10 +42,10 @@ end
 %     ,'Glu','Gly','HCar','H2O','Ins','Lac','NAA','NAAG','PCh','PCr','PE','Phenyl' ...
 %     ,'Scyllo','Ser','Tau','Tyros','mI','sI'};
 
-% Changed Ins and Scyllo to mI and sI, and added special metabolites
+% Changed Ins and Scyllo to mI and sI, and added special metabolites, added 'Ch' 20240426, scnh
 all_mets = {'AcAc','Ace','AcO','Ala','Asc','Asp','bHB','bHG','Cit','Cr','CrCH2','Cystat','EA','EtOH','GABA','GPC','GSH','Glc','Gln' ...
     ,'Glu','Gly','HCar','H2O','Lac','Lys','NAA','NAAG','PCh','PCr','PE','Phenyl' ...
-    ,'Ser','Tau','Thr','Tyros','Val','mI','sI'};
+    ,'Ser','Tau','Thr','Tyros','Val','mI','sI','Ch'};
 
 % Duplicate the input basis set
 basisSetOut = basisSetIn;

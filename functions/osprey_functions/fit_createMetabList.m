@@ -25,11 +25,11 @@ function metabList = fit_createMetabList(includeMetabs)
 %     ,'Scyllo','Ser','Tau','Tyros','MM09','MM12','MM14','MM17','MM20' ...
 %     ,'Lip09','Lip13','Lip20','MM37','MM38','MM40','MM42','MMexp','mI','sI'};
 
-% Changed Ins and Scyllo to mI and sI and added special metabolites
+% Changed Ins and Scyllo to mI and sI and added special metabolites, added 'Ch' 20240426 scnh
 all_mets = {'AcAc','Ace','AcO','Ala','Asc','Asp','bHB','bHG','Cit','Cr','CrCH2','Cystat','EA','EtOH','GABA','GPC','GSH','Glc','Gln' ...
     ,'Glu','Gly','HCar','H2O','Lac','Lys','NAA','NAAG','PCh','PCr','PE','Phenyl' ...
     ,'Ser','Tau','Thr','Tyros','Val','MM09','MM12','MM14','MM17','MM20' ...
-    ,'Lip09','Lip13','Lip20','MM37','MM38','MM40','MM42','MMexp','mI','sI'};
+    ,'Lip09','Lip13','Lip20','MM37','MM38','MM40','MM42','MMexp','mI','sI','Ch'};
 
 for rr = 1:length(all_mets)
     metabList.(all_mets{rr}) = 0;

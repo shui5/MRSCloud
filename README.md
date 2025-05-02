@@ -10,9 +10,9 @@ Usage:
 
 Modify simMRS.json:
 - Specify the metabolites of interest. Following are the full list of metabolites available for simulation.
-Common metabolites for the healthy brain: ["Asc","Asp","Cr","EA","GABA","GPC","GSH","Gln","Glu","Gly","H2O","Lac","mI","NAA","NAAG","PCh","PCr","PE","Ser","sI","Tau"],
-Metabolites for specific interests: ["Ala","Ace","AcO","AcAc","Cit","Cystat","HCar","Lys","Thr","bHG","Tyros","Val","Phenyl","bHB","Gua","iLe","Pyr","Suc","Tryp"],
-Exogenous compounds: ["EtOH","MSM"],
+- Common metabolites for the healthy brain: ["Asc","Asp","Cr","EA","GABA","GPC","GSH","Gln","Glu","Gly","H2O","Lac","mI","NAA","NAAG","PCh","PCr","PE","Ser","sI","Tau"],
+- Metabolites for specific interests: ["Ala","Ace","AcO","AcAc","Cit","Cystat","HCar","Lys","Thr","bHG","Tyros","Val","Phenyl","bHB","Gua","iLe","Pyr","Suc","Tryp"],
+- Exogenous compounds: ["EtOH","MSM"],
 
 - FieldStr: The exiting version of MRSCloud only supports generation of basis sets in 3T.
 - Options for vendor: GE/Philips/Siemens/Universal_Philips/Universal_Siemens

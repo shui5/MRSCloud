@@ -28,7 +28,7 @@ Modify simMRS.json:
 
 Remark 1: Cystat, HCar, iLe, and Lys have complex J coupling spin systems and will significantly increase the simulation time)
 Remark 2: Glc (glucose) is available in the spin system. Simulation will take extremely long for Glc due to its complex spin system.
-Remark 3: Product sequence and rf waveform are not shared in the GitHub repo.
+Remark 3: Product sequences and rf waveforms are not shared in the GitHub repo.
 
 Should you publish material that made use of MRSCloud, please cite the following publication:
 

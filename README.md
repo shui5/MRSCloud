@@ -21,7 +21,7 @@ Modify simMRS.json:
 - TE: specific the echo time in ms.They are fixed at 68 ms and 80 ms for HERMES and HERCULES, respectively
 - editOn and editOff are flexible for MEGA-PRESS. They are fixed for HERCULES.
 - editTp is the duration of the editing pulses. It is normally 14 ms for MEGA-PRESS/HERMES and 20 ms for HERCULES.
-- spatial_points: 41 is acceptable and 101 is ideal. The higher the number of spatial points, no longer it takes for the simulation.
+- spatial_points: 41 is acceptable and 101 is ideal. The higher the number of spatial points, the longer it takes for the simulation.
 - Keep the private parameters unchanged.
 - Set the output directories. work_dir is not necessary for MATLAB.
 - Run the run_simulations_cloud.m script.
